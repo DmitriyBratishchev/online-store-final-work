@@ -1,12 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import App from './app/app.jsx';
 import reportWebVitals from './reportWebVitals';
+import { Router } from 'react-router-dom';
+import history from './app/utils/history';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './index.css';
+import { createStore } from './app/store/createStore.js';
+import { Provider } from 'react-redux';
+// import './css/screen.css';
+
+const store = createStore();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={ store }>
+      <Router history={history}>
+        <App />
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
