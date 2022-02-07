@@ -11,6 +11,16 @@ const catalogService = {
     const { data } = await httpService.post(catalogEndpoint, payload);
     console.log('catalog create data', data);
     return data;
+  },
+  edit: async (payload) => {
+    const { data } = await httpService.put(catalogEndpoint + payload.id, payload);
+    console.log('catalog edit element', data);
+    return data;
+  },
+  remove: async (payload) => {
+    const { data } = await httpService.delete(catalogEndpoint + payload.id);
+    console.log('catalog remove element', data);
+    return data;
   }
 };
 

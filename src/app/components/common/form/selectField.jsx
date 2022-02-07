@@ -6,8 +6,10 @@ const SelectField = ({
   value,
   name,
   onChange,
+  onFocus,
   defaultOption,
   options,
+  required,
   error
 }) => {
   const handleChange = ({ target }) => {
@@ -26,9 +28,10 @@ const SelectField = ({
   return (
     <div className='mb-4'>
       <label htmlFor={ name } className='form-label'>
-        { label }
+        { label } { required && <span className='text-danger'>*</span> }
       </label>
       <select
+        onFocus={ onFocus }
         className={ getInputClasses() }
         name={ name }
         value={ value }
@@ -56,6 +59,8 @@ SelectField.propTypes = {
   defaultOption: PropTypes.string,
   error: PropTypes.string,
   onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  required: PropTypes.bool,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 

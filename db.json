@@ -57,16 +57,9 @@
     {
       "name": "Стол",
       "price": 300,
-      "numberOfGoods": 3,
+      "numberOfGoods": 5,
       "category": "3",
       "id": "Gzk50Zs"
-    },
-    {
-      "name": "Стул",
-      "price": 200,
-      "numberOfGoods": 555,
-      "category": "3",
-      "id": "l65UM3Q"
     },
     {
       "name": "Диван",
@@ -76,13 +69,6 @@
       "id": "671rCCI"
     },
     {
-      "name": "Samsung A-6",
-      "price": 5000,
-      "numberOfGoods": 8,
-      "category": "2",
-      "id": "QCvWZbe"
-    },
-    {
       "name": "Фен",
       "price": 300,
       "numberOfGoods": 6,
@@ -90,11 +76,18 @@
       "id": "vDnXBoV"
     },
     {
-      "name": "Молоток",
-      "price": 3000,
-      "numberOfGoods": 6,
+      "name": "Ноутбук",
+      "price": 20001,
+      "numberOfGoods": 5,
+      "category": "1",
+      "id": "rvvJqzj"
+    },
+    {
+      "name": "Хитрая приблуда",
+      "price": 100,
+      "numberOfGoods": 50,
       "category": "3",
-      "id": "4XKRjgB"
+      "id": "xsdIK_K"
     }
   ]
 }

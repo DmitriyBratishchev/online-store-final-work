@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import NavBar from './components/ui/navBar';
-import Admin from './laiout/admin';
-import Basket from './laiout/basket';
-import Catalog from './laiout/catalog';
-import Login from './laiout/login';
-import Main from './laiout/main';
+import Admin from './layout/admin';
+import Basket from './layout/basket';
+import Catalog from './layout/catalog';
+import Login from './layout/login';
+import Main from './layout/main';
 // import BreadCrumbs from './components/ui/breadCrumbs';
 
 function App() {

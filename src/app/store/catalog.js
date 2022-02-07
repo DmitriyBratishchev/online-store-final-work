@@ -25,6 +25,14 @@ const catalogSlice = createSlice({
     addCatalogElement: (state, action) => {
       state.entities.push(action.payload);
       state.isLoading = false;
+    },
+    editCatalogElement: (state, action) => {
+      const editIndex = state.entities.findIndex(e => e.id === action.payload.id);
+      state.entities[editIndex] = action.payload;
+    },
+    removeCatalogElement: (state, action) => {
+      const removeIndex = state.entities.findIndex(e => e.id === action.payload.id);
+      state.entities.splice(removeIndex, 1);
     }
   }
 });
@@ -34,7 +42,9 @@ const {
   catalogReceved,
   catalogRequested,
   catalogRequestedFiled,
-  addCatalogElement
+  addCatalogElement,
+  editCatalogElement,
+  removeCatalogElement
 } = actions;
 
 // 'диспатчеры'
@@ -61,5 +71,31 @@ export const createCatalogElement = (data) => async (dispatch) => {
     dispatch(catalogRequestedFiled(error));
   }
 };
+
+export const updatedCatalogElement = (data) => async (dispatch) => {
+  dispatch(catalogRequested());
+  try {
+    const content = await catalogService.edit(data);
+    console.log('content', content);
+    dispatch(editCatalogElement(content));
+  } catch (error) {
+    console.log('error', error);
+    dispatch(catalogRequestedFiled(error));
+  }
+};
+
+export const deleteCatalogElement = (data) => async (dispatch) => {
+  dispatch(catalogRequested());
+  try {
+    await catalogService.remove(data);
+    dispatch(removeCatalogElement(data));
+  } catch (error) {
+    console.log('error', error);
+    dispatch(catalogRequestedFiled(error));
+  }
+};
+
+// селекторы
+export const getCatalogList = () => (state) => state.catalog.entities;
 
 export default catalogReducer;

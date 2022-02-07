@@ -1,27 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createCatalogElement } from '../../../store/catalog';
+import PropTypes from 'prop-types';
+import { createCatalogElement, updatedCatalogElement } from '../../../store/catalog';
 import { getCategories, loadCategoriesList } from '../../../store/categories';
 import { validator } from '../../../utils/validator';
 import NumberField from '../../common/form/numberField';
 import SelectField from '../../common/form/selectField';
 import TextField from '../../common/form/textField';
 
-const AdminForm = () => {
-  const dispatch = useDispatch();
-  const categories = useSelector(getCategories());
-  const [data, setData] = useState({
+const AdminForm = ({ editData = {} }) => {
+  console.log('editData in Admin', editData);
+  const initialData = {
     name: '',
     price: 0,
     numberOfGoods: 0,
     category: ''
-  });
+  };
+  const dispatch = useDispatch();
+  const categories = useSelector(getCategories());
+  const [data, setData] = useState(initialData);
+  const [isEdit, setEdit] = useState(false);
   const [errors, setErrors] = useState({});
   const isValid = Object.keys(errors).length === 0;
 
   useEffect(() => {
     dispatch(loadCategoriesList());
   }, []);
+
+  useEffect(() => {
+    if (Object.keys(editData).length !== 0) {
+      setEdit(true);
+      setData(editData);
+    }
+  }, [editData]);
+
+  const cancelEdit = () => {
+    setEdit(false);
+    setData(initialData);
+  };
 
   console.log('categories', categories);
 
@@ -75,54 +91,73 @@ const AdminForm = () => {
     const isValid = validate();
     if (!isValid) return;
     console.log(data);
-    dispatch(createCatalogElement(data));
+    dispatch(isEdit ? updatedCatalogElement(data) : createCatalogElement(data));
+    if (!isEdit) {
+      setData(initialData);
+    };
   };
 
   return (
-    <form onSubmit={ handleSubmit } noValidate>
-      <TextField
-        label='Название товара'
-        name='name'
-        placeholder='Введите название товара'
-        value={ data.name }
-        onChange={ handleChange }
-        onFocus={ handleFocus }
-        error={ errors.name }
-        required={ true }
-      />
-      <SelectField
-        label='Категория'
-        name='category'
-        defaultOption='Выберите категорию'
-        value={ data.category }
-        options={ categories || [] }
-        onChange={ handleChange }
-        error={ errors.category }
-      />
-      <NumberField
-        label='Стоимость'
-        name='price'
-        placeholder='Цена'
-        value={ data.price }
-        onChange={ handleChange }
-        onFocus={ handleFocus }
-        error={ errors.price }
-        required={ true }
-      />
-      <NumberField
-        label='Количество'
-        name='numberOfGoods'
-        placeholder='0'
-        value={ data.numberOfGoods }
-        onChange={ handleChange }
-        onFocus={ handleFocus }
-        error={ errors.numberOfGoods }
-      />
-      <button disabled={ !isValid } className='btn btn-primary w-100 mx-auto'>
-        Отправить
-      </button>
-    </form>
+    <>
+      { isEdit
+        ? <div className='d-flex justify-content-between'>
+          <h3>Изменить</h3>
+          {/* <button > */ }
+          <i className="bi bi-file-earmark-plus fs-3 text-primary" onClick={ cancelEdit } role='button'></i>
+          {/* </button> */ }
+        </div>
+        : <h3>Создать</h3> }
+      <form onSubmit={ handleSubmit } noValidate>
+        <TextField
+          label='Название товара'
+          name='name'
+          placeholder='Введите название товара'
+          value={ data.name }
+          onChange={ handleChange }
+          onFocus={ handleFocus }
+          error={ errors.name }
+          required={ true }
+        />
+        <SelectField
+          label='Категория'
+          name='category'
+          defaultOption='Выберите категорию'
+          value={ data.category }
+          options={ categories || [] }
+          onChange={ handleChange }
+          onFocus={ handleFocus }
+          error={ errors.category }
+          required={ true }
+        />
+        <NumberField
+          label='Стоимость'
+          name='price'
+          placeholder='Цена'
+          value={ data.price }
+          onChange={ handleChange }
+          onFocus={ handleFocus }
+          error={ errors.price }
+          required={ true }
+        />
+        <NumberField
+          label='Количество'
+          name='numberOfGoods'
+          placeholder='0'
+          value={ data.numberOfGoods }
+          onChange={ handleChange }
+          onFocus={ handleFocus }
+          error={ errors.numberOfGoods }
+        />
+        <button disabled={ !isValid } className='btn btn-primary w-100 mx-auto'>
+          { isEdit ? 'Сохранить изменения' : 'Добавить товар' }
+        </button>
+      </form>
+    </>
   );
+};
+
+AdminForm.propTypes = {
+  editData: PropTypes.object
 };
 
 export default AdminForm;
