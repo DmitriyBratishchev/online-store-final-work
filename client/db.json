@@ -77,7 +77,7 @@
     },
     {
       "name": "Ноутбук",
-      "price": 20001,
+      "price": 20000,
       "numberOfGoods": 5,
       "category": "1",
       "id": "rvvJqzj"
@@ -88,6 +88,13 @@
       "numberOfGoods": 50,
       "category": "3",
       "id": "xsdIK_K"
+    },
+    {
+      "name": "dfdfghdfh",
+      "price": 4535,
+      "numberOfGoods": 3,
+      "category": "2",
+      "id": "uAerOfq"
     }
   ]
 }
