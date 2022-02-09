@@ -6,20 +6,12 @@ const schema = new Schema({
     ref: 'user',
     required: true
   },
-  accessToken: {
-    type: String,
-    required: true
-  },
   refreshToken: {
     type: String,
     required: true
-  },
-  exporesIn: {
-    type: String,
-    required: true
-  },
+  }
 }, {
   timestamps: true
 })
 
-module.exports = model('Auth', schema)
+module.exports = model('Token', schema)

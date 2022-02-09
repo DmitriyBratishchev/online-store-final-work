@@ -25,6 +25,6 @@ module.exports = model('User', schema)
 //   email: "d@mail.ru",
 //   password: "Test1234",
 //   image: "http//image",
-//   basket: [{ id: "Gzk50Zs", amount: 2 }],
+//   basket: [{ productId: "Gzk50Zs", amount: 2 }],
 //   favorites: ["Gzk50Zs"]
 // }
