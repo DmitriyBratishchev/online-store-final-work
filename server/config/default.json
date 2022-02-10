@@ -1,0 +1,6 @@
+{
+  "port": "8080",
+  "mongooUri": "",
+  "accessSecret": "secret token backend",
+  "refreshSecret": "super secret refresh"
+}
