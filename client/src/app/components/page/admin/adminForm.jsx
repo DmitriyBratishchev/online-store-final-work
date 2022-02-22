@@ -7,6 +7,8 @@ import { validator } from '../../../utils/validator';
 import NumberField from '../../common/form/numberField';
 import SelectField from '../../common/form/selectField';
 import TextField from '../../common/form/textField';
+import imageService from '../../../services/image.service';
+import FileField from '../../common/form/fileField';
 
 const AdminForm = ({ editData = {} }) => {
   console.log('editData in Admin', editData);
@@ -14,7 +16,8 @@ const AdminForm = ({ editData = {} }) => {
     name: '',
     price: 0,
     numberOfGoods: 0,
-    category: ''
+    category: '',
+    images: []
   };
   const dispatch = useDispatch();
   const categories = useSelector(getCategories());
@@ -80,9 +83,20 @@ const AdminForm = ({ editData = {} }) => {
   };
 
   const handleChange = (target) => {
+    // console.log('handleChange in admin', target);
     setData((prev) => ({
       ...prev,
       [target.name]: target.value
+    }));
+  };
+
+  const handleChangeFile = async (file) => {
+    // console.log('form file', file);
+    const image = await imageService.post(file);
+    // console.log('image', image);
+    setData((prev) => ({
+      ...prev,
+      images: [...prev.images, image]
     }));
   };
 
@@ -90,13 +104,13 @@ const AdminForm = ({ editData = {} }) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    console.log(data);
+    console.log('Submit', data);
     dispatch(isEdit ? updatedCatalogElement(data) : createCatalogElement(data));
     if (!isEdit) {
       setData(initialData);
     };
   };
-
+  console.log('data image', data.images);
   return (
     <>
       { isEdit
@@ -107,7 +121,7 @@ const AdminForm = ({ editData = {} }) => {
           {/* </button> */ }
         </div>
         : <h3>Создать</h3> }
-      <form onSubmit={ handleSubmit } noValidate>
+      <form onSubmit={ handleSubmit } noValidate encType='multipart/form-data'>
         <TextField
           label='Название товара'
           name='name'
@@ -147,6 +161,13 @@ const AdminForm = ({ editData = {} }) => {
           onChange={ handleChange }
           onFocus={ handleFocus }
           error={ errors.numberOfGoods }
+        />
+        <FileField
+          label='Фотографии товара.'
+          name='images'
+          value={ data.images }
+          onChange={ handleChange }
+          onChangeFile={ handleChangeFile }
         />
         <button disabled={ !isValid } className='btn btn-primary w-100 mx-auto'>
           { isEdit ? 'Сохранить изменения' : 'Добавить товар' }

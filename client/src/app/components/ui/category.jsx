@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getCategories } from '../../store/categories';
 
-const Category = ({ id }) => {
-  console.log('id', id);
+const Category = ({ _id }) => {
+  console.log('id', _id);
   const categories = useSelector(getCategories());
   if (categories.length) {
-    const category = categories.find(c => c.id === id);
+    const category = categories.find(c => c._id === _id);
     return <span>{ category.name }</span>;
   } else {
     return 'loading ...';
@@ -15,7 +15,7 @@ const Category = ({ id }) => {
 };
 
 Category.propTypes = {
-  id: PropTypes.string
+  _id: PropTypes.string
 };
 
 export default Category;

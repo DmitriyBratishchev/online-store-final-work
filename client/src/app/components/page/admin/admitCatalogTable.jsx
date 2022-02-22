@@ -16,7 +16,7 @@ const AdminCatalogTable = ({ catalog, handleEdit, handleDelete }) => {
     category: {
       name: 'Категория',
       iter: 'category',
-      component: (item) => <Category id={ item.category } />
+      component: (item) => <Category _id={ item.category } />
     },
     price: {
       name: 'Цена',

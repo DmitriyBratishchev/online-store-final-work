@@ -27,11 +27,11 @@ const catalogSlice = createSlice({
       state.isLoading = false;
     },
     editCatalogElement: (state, action) => {
-      const editIndex = state.entities.findIndex(e => e.id === action.payload.id);
+      const editIndex = state.entities.findIndex(e => e._id === action.payload._id);
       state.entities[editIndex] = action.payload;
     },
     removeCatalogElement: (state, action) => {
-      const removeIndex = state.entities.findIndex(e => e.id === action.payload.id);
+      const removeIndex = state.entities.findIndex(e => e._id === action.payload._id);
       state.entities.splice(removeIndex, 1);
     }
   }
@@ -74,6 +74,7 @@ export const createCatalogElement = (data) => async (dispatch) => {
 
 export const updatedCatalogElement = (data) => async (dispatch) => {
   dispatch(catalogRequested());
+  console.log('data inedit', data);
   try {
     const content = await catalogService.edit(data);
     console.log('content', content);
