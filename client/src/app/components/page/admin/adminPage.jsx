@@ -22,7 +22,7 @@ const AdminPage = () => {
   };
 
   console.log('catalog', catalog);
-  if (catalog.length === 0) return <h3>Загрузка ...</h3>;
+  // if (catalog.length === 0) return <h3>Загрузка ...</h3>;
   return (
     <><h2>Admin</h2>
       <div className="d-flex">
@@ -33,11 +33,13 @@ const AdminPage = () => {
         </div>
         <div className="col-9">
           <h2>Список товаров</h2>
-          <AdmitCatalogTable
-            handleDelete={ handleDelete }
-            handleEdit={ handleEdit }
-            catalog={ catalog }
-          />
+          { catalog.length === 0 ? <h3>Загрузка ...</h3> :
+            <AdmitCatalogTable
+              handleDelete={ handleDelete }
+              handleEdit={ handleEdit }
+              catalog={ catalog }
+            />
+          }
         </div>
       </div></>
   );

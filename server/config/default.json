@@ -1,6 +1,7 @@
 {
   "port": "8080",
-  "mongooUri": "",
+  "mongooUri": "mongodb+srv://dmitriy:Test1234-dima@cluster0.xirnl.mongodb.net/final-work?retryWrites=true&w=majority",
   "accessSecret": "secret token backend",
-  "refreshSecret": "super secret refresh"
+  "refreshSecret": "super secret refresh",
+  "images": ""
 }

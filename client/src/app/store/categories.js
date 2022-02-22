@@ -43,6 +43,6 @@ export const loadCategoriesList = () => async (dispatch) => {
 
 // 'Селекторы'
 export const getCategories = () => (state) => state.categories.entities;
-export const getCategoryNameById = (id) => (state) => state.categories.entities.filter(c => c.id === id)[0]?.name;
+export const getCategoryNameById = (_id) => (state) => state.categories.entities.filter(c => c._id === _id)[0]?.name;
 
 export default categoriesReducer;

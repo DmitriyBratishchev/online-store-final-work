@@ -1,0 +1,48 @@
+
+.label{
+  width: 100%;
+  min-height: 50px;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  transition: all 0.18s ease-in-out;
+  border: 1px solid #333;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.inputHidden {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.fotoContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.foto{
+  width: 100px;
+  height: 100px;
+  margin: 15px;
+  margin-right: auto;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px dashed #999999;
+  border-radius: 5px;
+}
+
+.delete{
+  position: absolute;
+  top: 1px;
+  right: 5px;
+  opacity: .7;
+}

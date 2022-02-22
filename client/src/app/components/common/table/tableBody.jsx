@@ -17,7 +17,7 @@ const TableBody = ({ data, columns }) => {
   return (
     <tbody>
       { data.map((item) => (
-        <tr key={ item.id } className=''>
+        <tr key={ item._id } className=''>
           { Object.keys(columns).map((column) => (
             <td key={ column }>{ renderContent(column, item) }</td>
           )) }

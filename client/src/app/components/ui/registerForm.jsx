@@ -78,7 +78,7 @@ const RegisterForm = () => {
   };
 
   const postDb = async (data) => {
-    await fetch('http://localhost:4000/users', {
+    await fetch('http://localhost:8080/api/auth/signUp', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

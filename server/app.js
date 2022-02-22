@@ -2,7 +2,9 @@ const express = require('express')
 const mongoose = require('mongoose')
 const config = require('config')
 const chalk = require('chalk')
+const cors = require('cors')
 const initDataBase = require('./startUp/initDataBase')
+const fileUpload = require('express-fileupload')
 const routes = require('./routes')
 
 const app = express()
@@ -10,7 +12,9 @@ const PORT = config.get('port') ?? 8080
 
 // middleware
 app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }))
+app.use(fileUpload({}))
+app.use(cors())
 app.use('/api', routes)
 
 if (process.env.NODE_ENV === 'production') {
@@ -21,9 +25,9 @@ if (process.env.NODE_ENV === 'production') {
 
 async function start() {
   try {
-    mongoose.connection.once('open', () => {
-      initDataBase()
-    })
+    // mongoose.connection.once('open', () => {
+    //   initDataBase()
+    // })
     await mongoose.connect(config.get('mongooUri'))
     app.listen(PORT, () =>
       console.log(chalk.green(`Server has been started on port ${PORT} ...`))

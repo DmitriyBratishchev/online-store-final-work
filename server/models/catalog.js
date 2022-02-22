@@ -17,9 +17,9 @@ const schema = new Schema({
     ref: 'Categories',
     required: true
   },
-  image: {
-    type: [String]
-  }
+  images: [{
+    type: String
+  }]
 }, {
   timestamps: true
 })

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '../../ui/avatar';
+import config from '../../../configFile.json';
+// import Avatar from '../../ui/avatar';
 import { getCategoryNameById, loadCategoriesList } from '../../../store/categories';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -15,7 +16,10 @@ const Card = ({ element }) => {
       <div className="d-flex justify-content-between border border-secondary border-3 p-4 m-2 w-100">
         {/* <div className="row"> */ }
         <div className="image-card">
-          <Avatar width='150' />
+          { element.images.map((image) => {
+            return <img key={ image } src={ config.apiImages + image } alt="foto" width="150px" height="150px" />;
+          }) }
+          {/* <Avatar width='150' /> */ }
         </div>
         <div className="d-flex ms-3 me-auto">
           <div className="collumn">
