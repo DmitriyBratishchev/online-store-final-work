@@ -6,6 +6,7 @@ import Basket from './layout/basket';
 import Catalog from './layout/catalog';
 import Login from './layout/login';
 import Main from './layout/main';
+import './app.css';
 // import BreadCrumbs from './components/ui/breadCrumbs';
 
 function App() {

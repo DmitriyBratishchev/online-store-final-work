@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     // res.status(201).json({data: imagePath})
 
     const newGoods = await Catalog.create({
-      images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRH7xQpMdQnGTADXlPUefASh0Oj3o-AUO3CGOj89wtgotPKb5JiIcWgI-Ik9fFxZSJ1Qc&usqp=CAU'],
+      // images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRH7xQpMdQnGTADXlPUefASh0Oj3o-AUO3CGOj89wtgotPKb5JiIcWgI-Ik9fFxZSJ1Qc&usqp=CAU'],
       ...req.body
     })
     res.status(201).send(newGoods)
