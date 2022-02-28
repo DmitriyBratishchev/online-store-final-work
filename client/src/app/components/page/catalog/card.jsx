@@ -4,6 +4,8 @@ import config from '../../../configFile.json';
 // import Avatar from '../../ui/avatar';
 import { getCategoryNameById, loadCategoriesList } from '../../../store/categories';
 import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
+import style from './card.module.css';
 
 const Card = ({ element }) => {
   const dispatch = useDispatch();
@@ -13,12 +15,15 @@ const Card = ({ element }) => {
   }, []);
   return (
     <>
-      <div className="d-flex justify-content-between border border-secondary border-3 p-4 m-2 w-100">
+      <div className="d-flex justify-content-center border border-secondary border-3 p-4 m-2 w-100">
         {/* <div className="row"> */ }
-        <div className="image-card">
-          { element.images.map((image) => {
-            return <img key={ image } src={ config.apiImages + image } alt="foto" width="150px" height="150px" />;
-          }) }
+        <div className={ classNames(style.image_card) }>
+          { element.images.length === 0
+            ? <img src='image/no-img.png' alt="foto" width="150px" height="150px" />
+            : element.images.map((image) => {
+              return <img key={ image } className={ classNames(style.foto) } src={ config.apiImages + image } alt="foto" />;
+            })
+          }
           {/* <Avatar width='150' /> */ }
         </div>
         <div className="d-flex ms-3 me-auto">
