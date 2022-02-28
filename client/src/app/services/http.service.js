@@ -1,8 +1,17 @@
 import axios from 'axios';
 import config from '../configFile.json';
 
+// baseURL: config.apiJsonServer
+
 const http = axios.create({
-  baseURL: config.apiJsonServer
+  baseURL: config.apiNodeServer
+});
+
+http.interceptors.request.use((req) => {
+  console.log('interceptor req', req);
+  return req;
+}, (error) => {
+  console.log('interceptor req error', error);
 });
 
 http.interceptors.response.use((res) => {

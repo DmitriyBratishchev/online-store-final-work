@@ -13,12 +13,12 @@ const catalogService = {
     return data;
   },
   edit: async (payload) => {
-    const { data } = await httpService.put(catalogEndpoint + payload.id, payload);
+    const { data } = await httpService.put(catalogEndpoint + payload._id, payload);
     console.log('catalog edit element', data);
     return data;
   },
   remove: async (payload) => {
-    const { data } = await httpService.delete(catalogEndpoint + payload.id);
+    const { data } = await httpService.delete(catalogEndpoint + payload._id);
     console.log('catalog remove element', data);
     return data;
   }

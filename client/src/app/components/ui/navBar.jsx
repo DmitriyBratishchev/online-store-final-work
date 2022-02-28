@@ -5,7 +5,7 @@ import Avatar from './avatar';
 const NavBar = () => {
   return (
     <nav className='navbar navbar-expand-md navbar-dark bg-primary'>
-      <div className='container container-fluid'>
+      <div className='container-fluid'>
         <div className='collapse navbar-collapse navbar-nav' id='navbarSupportedContent'>
           <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
             <li className='nav-item'>

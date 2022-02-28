@@ -37,6 +37,13 @@
       "name": "Dima vvvv",
       "licence": true,
       "id": "CeCrYXQ"
+    },
+    {
+      "email": "d12345@mail.ru",
+      "password": "Test1234",
+      "name": "Dima",
+      "licence": true,
+      "id": "f_wlnYm"
     }
   ],
   "categories": [
