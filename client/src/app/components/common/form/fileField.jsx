@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import imageService from '../../../services/image.service';
@@ -7,10 +7,14 @@ import fileStyle from './fileField.module.css';
 
 const FileField = ({ label, name, value, onChange, onChangeFile }) => {
   const fileInput = useRef();
-  // const [fileLink, setFileKink] = useState([]);
+  const dragContainer = useRef();
+  const [dragIndex, setDragIndex] = useState(null);
+  const [valueOnDragable, setValueOnDragable] = useState();
+
+  useEffect(() => setValueOnDragable(value), [value]);
 
   const handleChangeFile = (event) => {
-    // console.log('form file', event);
+    console.log('form file', event);
     event.preventDefault();
     event.stopPropagation();
     const files = [...event.target.files];
@@ -19,20 +23,6 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
     });
   };
 
-  const handleDrop = (event) => {
-    // console.log('files drop', event);
-    event.preventDefault();
-    event.stopPropagation();
-    const files = [...event.dataTransfer.files];
-    // console.log('files drop', files);
-    files.forEach(async (oneOfImages) => {
-      onChangeFile(oneOfImages);
-    });
-  };
-
-  // console.log('fileStyle', fileStyle);
-  // console.log('file array', fileLink);
-  // console.log('fileInput.current', fileInput.current?.files);
   const handleDelete = async (event, image) => {
     event.preventDefault();
     try {
@@ -46,28 +36,67 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
     }
   };
 
-  const hendleDragEnter = (event) => {
-    console.log('hendleDragEnter');
+  const handleDrop = (event, index) => {
+    console.log('files drop', event);
+    event.preventDefault();
+    event.stopPropagation();
+    if (index === undefined && dragIndex !== null) {
+      return setValueOnDragable(value);
+    };
+    if (dragIndex === null) {
+      const files = [...event.dataTransfer.files];
+      if (files.length !== 0) {
+        console.log('files drop', files);
+        files.forEach(async (oneOfImages) => {
+          onChangeFile(oneOfImages);
+        });
+      }
+    };
+    if (index !== undefined && dragIndex !== null) {
+      console.log('index drop', index, dragIndex);
+      const newValue = [...value];
+      newValue.splice(index >= dragIndex ? index + 1 : index, 0, newValue[dragIndex]);
+      newValue.splice(index >= dragIndex ? dragIndex : dragIndex + 1, 1);
+      setDragIndex(null);
+      onChange({ name, value: newValue });
+    }
+  };
+
+  const fileDragEnter = (event) => {
+    console.log('hendleDragEnter', event);
     event.preventDefault();
     event.stopPropagation();
   };
 
-  const hendleDragLeave = (event) => {
+  const fileDragLeave = (event) => {
     console.log('hendleDragLeave');
     event.preventDefault();
     event.stopPropagation();
   };
 
-  const hendleDragOver = (event) => {
-    console.log('hendleDragOver');
+  const fileDragOver = (event, index) => {
+    console.log('hendleDragOver', index, dragIndex);
     event.preventDefault();
     event.stopPropagation();
+    if (index !== undefined && dragIndex !== null) {
+      console.log('index drop', index, dragIndex);
+      const newValue = [...value];
+      newValue.splice(index >= dragIndex ? index + 1 : index, 0, newValue[dragIndex]);
+      newValue.splice(index >= dragIndex ? dragIndex : dragIndex + 1, 1);
+      setValueOnDragable(newValue);
+    }
+  };
+
+  const imageDragStart = (e, index) => {
+    setDragIndex(index);
   };
 
   return (
     <div className=""
       onDrop={ handleDrop }
-      onDragEnter={ hendleDragEnter } onDragLeave={ hendleDragLeave } onDragOver={ hendleDragOver }
+      onDragEnter={ fileDragEnter }
+      onDragLeave={ fileDragLeave }
+      onDragOver={ fileDragOver }
     >
       <label htmlFor={ name } className={ fileStyle.label }>{ label }
         <input
@@ -79,14 +108,18 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
           ref={ fileInput }
           onChange={ (e) => handleChangeFile(e) }
         />
-        <div className={ fileStyle.fotoContainer } >
-          { value.length !== 0 && value.map((image) => {
+        <div className={ fileStyle.fotoContainer } ref={ dragContainer }>
+          { value.length !== 0 && valueOnDragable.map((image, index) => {
             return (
               <div
                 key={ image }
-                className={ fileStyle.foto }
-                style={ { 'background-image': `url(${config.apiImages + image})` } }
+                draggable
+                onDragStart={ e => imageDragStart(e, index) }
+                onDragOver={ e => fileDragOver(e, index) }
+                onDrop={ e => handleDrop(e, index) }
+                className={ fileStyle.fotoCard }
               >
+                <div className={ fileStyle.foto } style={ { backgroundImage: `url(${config.apiImages + image})` } }></div>
                 <div role={ 'button' } type='button' className={ fileStyle.delete } onClick={ (e) => handleDelete(e, image) }><i className="bi bi-x-circle-fill text-danger"></i></div>
               </div>
             );

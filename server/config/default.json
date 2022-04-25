@@ -1,6 +1,8 @@
 {
   "port": "8080",
   "mongooUri": "mongodb+srv://dmitriy:Test1234-dima@cluster0.xirnl.mongodb.net/final-work?retryWrites=true&w=majority",
+  "secondMongooUrl": "mongodb://uvidyseu7mbsw246v4lf:8splzrgqPiaL4SFPyQX4@bjanxxjnyjg9soa-mongodb.services.clever-cloud.com:27017/bjanxxjnyjg9soa",
+  "info": "addon_2b3866d6-9723-4b3f-9ece-73e73a9416ed",
   "accessSecret": "secret token backend",
   "refreshSecret": "super secret refresh",
   "images": ""

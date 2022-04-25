@@ -31,7 +31,10 @@ const AdminForm = ({ editData = {} }) => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(editData).length !== 0) {
+    if (Object.keys(editData).length === 0) {
+      setEdit(false);
+      setData(initialData);
+    } else {
       setEdit(true);
       setData(editData);
     }
@@ -83,7 +86,7 @@ const AdminForm = ({ editData = {} }) => {
   };
 
   const handleChange = (target) => {
-    // console.log('handleChange in admin', target);
+    console.log('handleChange in admin', target);
     setData((prev) => ({
       ...prev,
       [target.name]: target.value
@@ -110,7 +113,7 @@ const AdminForm = ({ editData = {} }) => {
       setData(initialData);
     };
   };
-  console.log('data image', data.images);
+  console.log('data', data);
   return (
     <>
       { isEdit

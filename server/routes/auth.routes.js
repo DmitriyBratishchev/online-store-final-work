@@ -8,11 +8,15 @@ const router = express.Router({ mergeParams: true })
 router.post('/signUp', [
   check('email', 'Некорректный email.').isEmail(),
   check('password', 'Минимальная длина пароля 8 символов.').isLength({ min: 8 }),
-  check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+/g),
+  // check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+/g),
   async (req, res) => {
+    console.log('/signUp');
     try {
+      console.log('/signUp in try');
       const errors = validationResult(req)
+      console.log(errors);
       if (!errors.isEmpty()) {
+        console.log('/signUp in try & error');
         return res.status(400).json({
           error: {
             message: 'INVALID_DATA',
@@ -48,10 +52,11 @@ router.post('/signUp', [
       const tokens = tokenService.generate({ _id: newUser._id })
       await tokenService.save(newUser._id, tokens.refreshToken)
 
-      res.status(201).send({...tokens, usedId: newUser._id})
+      res.status(201).send({...tokens, userId: newUser._id})
 
 
     } catch (error) {
+      console.log('error sign up');
       res.status(500).json({
         message: 'На сервере произошла ошибка. Попробуйте позже.'
       })

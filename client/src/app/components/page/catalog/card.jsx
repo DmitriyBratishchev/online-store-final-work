@@ -6,6 +6,7 @@ import { getCategoryNameById, loadCategoriesList } from '../../../store/categori
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import style from './card.module.css';
+import SwiperCart from '../../common/swiper/swiperCart';
 
 const Card = ({ element }) => {
   const dispatch = useDispatch();
@@ -20,9 +21,14 @@ const Card = ({ element }) => {
         <div className={ classNames(style.image_card) }>
           { element.images.length === 0
             ? <img src='image/no-img.png' alt="foto" width="150px" height="150px" />
-            : element.images.map((image) => {
-              return <img key={ image } className={ classNames(style.foto) } src={ config.apiImages + image } alt="foto" />;
-            })
+            : element.images.length === 1
+              ? <img className={ style.foto } src={ config.apiImages + element.images[0] } alt="foto" />
+              : (
+                <SwiperCart
+                  images={ element.images }
+                />
+
+              )
           }
           {/* <Avatar width='150' /> */ }
         </div>
