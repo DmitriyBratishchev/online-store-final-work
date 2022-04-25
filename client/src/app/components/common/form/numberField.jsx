@@ -8,17 +8,24 @@ const NumberField = ({
   value,
   required,
   placeholder,
+  onlyPositive = false,
   error,
   onChange,
   onFocus
 }) => {
   const handleChange = ({ target }) => {
-    // if (/[^0-9]/g.test(target.value)) return;
-    onChange({ name: target.name, value: toNumber(target.value) });
+    console.log('target.value', target.value, typeof target.value, /[^0-9]/g.test(target.value));
+    if (/[^0-9]/g.test(target.value)) {
+      console.log('in if');
+      onChange({ name: target.name, value: value });
+    } else {
+      onChange({ name: target.name, value: toNumber(target.value) });
+    }
   };
   const getInputClasses = () => {
     return 'form-control' + (error ? ' is-invalid' : '');
   };
+  console.log('value', value, typeof value);
   return (
     <div className='mb-4'>
       { label && (
@@ -28,11 +35,11 @@ const NumberField = ({
       ) }
       <div className='input-group'>
         <input
-          type='number'
+          type='text'
           autoComplete='off'
           id={ name }
           name={ name }
-          value={ toNumber(value) || '' }
+          value={ value }
           placeholder={ placeholder }
           onChange={ handleChange }
           onFocus={ onFocus }
@@ -47,9 +54,10 @@ const NumberField = ({
 NumberField.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
-  value: PropTypes.number,
+  value: PropTypes.any,
   required: PropTypes.bool,
   placeholder: PropTypes.string,
+  onlyPositive: PropTypes.bool,
   error: PropTypes.string,
   onChange: PropTypes.func,
   onFocus: PropTypes.func

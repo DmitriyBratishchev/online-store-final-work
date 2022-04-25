@@ -1,5 +1,7 @@
 import axios from 'axios';
 import config from '../configFile.json';
+import authService from './auth.service';
+import localStorageService from './localStorage.service';
 
 // baseURL: config.apiJsonServer
 
@@ -7,8 +9,26 @@ const http = axios.create({
   baseURL: config.apiNodeServer
 });
 
-http.interceptors.request.use((req) => {
+http.interceptors.request.use(async (req) => {
+  if (req.url.includes('catalog')) return req;
   console.log('interceptor req', req);
+  const expiresDate = localStorageService.getTokenExpiresDate();
+  const refreshToken = localStorageService.getRefreshToken();
+  const isExpired = refreshToken && expiresDate < Date.now();
+
+  if (isExpired) {
+    console.log('refresh token');
+    const data = await authService.refresh();
+    localStorageService.setTokens(data);
+  }
+  const accessToken = localStorageService.getAccessToken();
+  if (accessToken) {
+    req.headers = {
+      ...req.headers,
+      Authorization: `Bearer ${accessToken}`
+    };
+  }
+
   return req;
 }, (error) => {
   console.log('interceptor req error', error);

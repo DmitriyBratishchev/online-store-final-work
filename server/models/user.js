@@ -12,8 +12,12 @@ const schema = new Schema({
     },
     amount: Number
   }],
-  favorites: [{type: Schema.Types.ObjectId,
-    ref: 'Catalog',}]
+  favorites: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Catalog',
+    }
+  ]
 }, {
   timestamps: true
 })

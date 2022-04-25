@@ -4,6 +4,7 @@ import App from './app/app.jsx';
 import reportWebVitals from './reportWebVitals';
 import { Router } from 'react-router-dom';
 import history from './app/utils/history';
+// import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap';
@@ -11,6 +12,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 import { createStore } from './app/store/createStore.js';
 import { Provider } from 'react-redux';
+// import { FreeMode, Mousewheel, Scrollbar } from 'swiper';
 // import './css/screen.css';
 
 const store = createStore();
@@ -18,7 +20,7 @@ const store = createStore();
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={ store }>
-      <Router history={history}>
+      <Router history={ history }>
         <App />
       </Router>
     </Provider>

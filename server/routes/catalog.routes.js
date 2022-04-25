@@ -1,9 +1,11 @@
 const express = require('express')
+const fs = require('fs/promises')
 const auth = require('../middleware/auth.middleware')
 const Catalog = require('../models/catalog')
 const router = express.Router({ mergeParams: true })
 
 const path = require('path')
+const chalk = require('chalk')
 
 
 router.get('/', async (req, res) => {
@@ -72,6 +74,19 @@ router.delete('/:catalogId', async (req, res) => {
       })
     }
 
+    const { images } = await Catalog.findById(catalogId);
+    console.log('images', images);
+    if (images.length !== 0) {
+      images.forEach(im => {
+      try {
+          const imagePath = path.resolve('images/' + im)
+          console.log('delete image', imagePath );
+          fs.unlink(imagePath)
+        } catch (error) {
+          console.log(chalk.red('Файл ', im, ' удалить не получилось.'));
+        }
+        })
+    }
     const deleteGoods = await Catalog.findByIdAndDelete(catalogId)
     console.log('delete goods', deleteGoods);
     res.status(200).send(deleteGoods)

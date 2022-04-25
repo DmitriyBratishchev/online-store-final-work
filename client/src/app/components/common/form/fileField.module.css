@@ -1,5 +1,4 @@
-
-.label{
+.label {
   width: 100%;
   min-height: 50px;
   border-radius: 4px;
@@ -21,26 +20,43 @@
   z-index: -1;
 }
 
-.fotoContainer{
+.fotoContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
+  padding: 10px;
 }
 
-.foto{
-  width: 100px;
-  height: 100px;
-  margin: 15px;
-  margin-right: auto;
+.fotoCard {
   position: relative;
+  padding-top: calc(50% - 30px);
+  margin: 10px;
+  width: calc(50% - 20px);
+  max-width: calc(50% - 20px);
+  flex-grow: 1;
+  border: 1px dashed #999999;
+  border-radius: 5px;
+  cursor: grab;
+}
+
+.fotoCard:first-child {
+  padding-top: calc(100% - 20px);
+  width: calc(100% - 20px);
+  max-width: calc(100% - 20px);
+}
+
+.foto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  border: 1px dashed #999999;
-  border-radius: 5px;
 }
 
-.delete{
+.delete {
   position: absolute;
   top: 1px;
   right: 5px;

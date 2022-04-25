@@ -16,7 +16,6 @@ function App() {
       {/* <BreadCrumbs /> */ }
       <Switch>
         <Route path="/admin" exact component={ Admin } />
-        <Route path="/basket" exact component={ Basket } />
         <Route path="/catalog" exact component={ Catalog } />
         <Route path="/basket" exact component={ Basket } />
         <Route path="/login/:type?" exact component={ Login } />

@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadCatalogList } from '../store/catalog';
 import Card from '../components/page/catalog/card';
+// import { FreeMode, Mousewheel, Scrollbar } from 'swiper';
+// import { Swiper, SwiperSlide } from 'swiper/react';
 
 const Catalog = () => {
   const dispatch = useDispatch();
@@ -19,11 +21,30 @@ const Catalog = () => {
           <div className='col-2 bg-danger m-2 me-4' style={ { maxHeight: '40vh', position: 'sticky', top: '3rem' } }>
             <h3 className='p-2'>Сортировка</h3>
           </div>
-          <div className='d-flex flex-wrap grid-1 justify-content-around'>
-            { catalog.length !== 0 && catalog.map(element => {
-              return <Card key={ element.id } element={ element } />;
+          {/* <Swiper
+            modules={ [Scrollbar, FreeMode, Mousewheel] }
+            mousewheel={ { eventsTarget: 'container', sensitivity: 0.5, releaseOnEdges: true } }
+            scrollbar={ { el: '.swiper-scrollbar-my' } }
+            freeMode={ { enabled: true, sticky: false } }
+            height={ 250 }
+            // width={ 1000 }
+            slidesPerGroup={ 1 }
+            speed={ 2000 }
+            direction='vertical'
+          > */}
+          <div className='d-flex flex-wrap grid-1 justify-content-around w-100'>
+            { catalog.length !== 0 && catalog.map((element, index) => {
+              console.log('catalog, elem №', index);
+              return (
+                // <SwiperSlide>
+                <Card key={ element._id } element={ element } />
+              );
             }) }
+            {/* </SwiperSlide> */ }
+
           </div>
+          {/* <div className='swiper-scrollbar-my'>hhhh</div> */ }
+          {/* </Swiper> */ }
         </div>
       </div>
     </>

@@ -1,4 +1,5 @@
 const express = require('express')
+const fsSync = require('fs')
 const fs = require('fs/promises')
 const path = require('path')
 const Categories = require('../models/categories')
@@ -19,10 +20,11 @@ router.get('/:image', async (req, res, next) => {
         'x-sent': true
       }
     }
-    const {image} = req.params
+    const { image } = req.params
+    const imagePath = path.resolve('images/' + image)
     console.log('image в try', image);
     // const list = await Categories.find()
-    res.sendFile(image, options, function(err) {
+    res.sendFile(fsSync.existsSync(imagePath) ? image : 'no-img.png', options, function(err) {
       if (err) {
         next(err)
       }
@@ -58,8 +60,10 @@ router.delete('/:imageName', async (req, res) => {
     // console.log('file', req.files);
 
     const imagePath = path.resolve('images/' + imageName)
-    console.log(imagePath );
-    fs.unlink(imagePath)
+    console.log(imagePath);
+    if (fsSync.existsSync(imagePath)) {
+      fs.unlink(imagePath)
+    } else (console.log('нет файла'))
     res.status(201).send(imageName)
   } catch (error) {
     res.status(500).json({

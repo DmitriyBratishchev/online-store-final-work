@@ -19,9 +19,11 @@ const AdminPage = () => {
 
   const handleDelete = (item) => {
     dispatch(deleteCatalogElement(item));
+    setEditData({});
   };
 
   console.log('catalog', catalog);
+  console.log('editData', editData);
   // if (catalog.length === 0) return <h3>Загрузка ...</h3>;
   return (
     <><h2>Admin</h2>
