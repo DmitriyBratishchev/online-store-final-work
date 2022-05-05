@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import TextField from '../common/form/textField';
 import { validator } from '../../utils/validator';
 // import CheckBoxField from '../common/form/checkBoxField';
-// import { useHistory } from 'react-router';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { deleteAuthError, getAuthError, login } from '../../store/users';
+import { useHistory } from 'react-router';
+// import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteAuthError, getAuthError, login } from '../../store/user';
 
 const LoginForm = () => {
-  // const history = useHistory();
-  // const dispatch = useDispatch();
-  // const loginError = useSelector(getAuthError());
+  const history = useHistory();
+  // const location = useLocation();
+  const dispatch = useDispatch();
+  const loginError = useSelector(getAuthError());
   const [data, setData] = useState({ email: '', password: '', stayOn: true });
   const [errors, setErrors] = useState({});
   const isValid = Object.keys(errors).length === 0;
@@ -59,7 +61,7 @@ const LoginForm = () => {
       ...prev,
       [target.name]: target.value
     }));
-    // dispatch(deleteAuthError());
+    dispatch(deleteAuthError());
   };
 
   const handleFocus = ({ target }) => {
@@ -73,10 +75,12 @@ const LoginForm = () => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    // const redirect = history.location.state ? history.location.state.from.pathname : '/';
+    const redirect = history.location.state ? history.location.state.from.pathname : '/';
     console.log('login data', data);
-    // dispatch(login({ payload: data, redirect }));
+    dispatch(login({ payload: data, redirect }));
   };
+
+  // console.log('location', location);
   return (
     <form onSubmit={ handleSubmit }>
       <TextField
@@ -103,7 +107,7 @@ const LoginForm = () => {
       {/* <CheckBoxField value={ data.stayOn } onChange={ handleChange } name='stayOn'>
         Оставаться в системе
       </CheckBoxField> */}
-      {/* { loginError && <p className='text-danger'>{ loginError }</p> } */ }
+      { loginError && <p className='text-danger'>{ loginError }</p> }
       <button disabled={ !isValid } className='btn btn-primary w-100 mx-auto'>
         Отправить
       </button>

@@ -7,10 +7,10 @@ const Categories = require('../models/categories')
 const router = express.Router({ mergeParams: true })
 
 router.get('/:image', async (req, res, next) => {
-  console.log('image');
+  // console.log('image');
 
   // const fileName = req.params.image
-  console.log(path.resolve('images'));
+  // console.log(path.resolve('images'));
   try {
     const options = {
       root: path.resolve('images'),
@@ -22,7 +22,7 @@ router.get('/:image', async (req, res, next) => {
     }
     const { image } = req.params
     const imagePath = path.resolve('images/' + image)
-    console.log('image в try', image);
+    // console.log('image в try', image);
     // const list = await Categories.find()
     res.sendFile(fsSync.existsSync(imagePath) ? image : 'no-img.png', options, function(err) {
       if (err) {

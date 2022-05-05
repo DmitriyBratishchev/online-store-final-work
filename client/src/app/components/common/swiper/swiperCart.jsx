@@ -10,7 +10,7 @@ import config from '../../../configFile.json';
 import style from './swiper.module.css';
 import { getRandomNumber } from '../../../utils/getRandomNumber';
 
-function SwiperCart({ images }) {
+function SwiperCart({ images, propClassName }) {
   // const swiper = useSwiper();
   // console.log(swiper);
   const randomDelay = getRandomNumber(1000, 4000);
@@ -20,34 +20,38 @@ function SwiperCart({ images }) {
       // effect='cube'
       mousewheel
       loop
-      zoom={ { maxRatio: 10 } }
+      zoom={ { maxRatio: 2 } }
       onMouseEnter={ () => console.log('mouseIn') }
       spaceBetween={ 5 }
       slidesPerView={ 1 }
-      navigation={ { nextEl: '.nextSlide' } }
+      // navigation={ { nextEl: '.nextSlide' } }
       autoplay={ { delay: randomDelay, disableOnInteraction: false } }
       pagination={ { clickable: true, dynamicBullets: true } }
       // scrollbar={ { draggable: true } }
       // onSwiper={ (swiper) => console.log('swiper', swiper.autoplay.start()) }
       // onSlideChange={ (swiper) => console.log('onSlideChange', swiper.autoplay.stop()) }
-      onClick={ (swiper) => console.log('onClick', swiper.autoplay.start()) }
-
+      onDoubleClick={ (swiper) => console.log('onClick', swiper.autoplay.start(), swiper.autoplay.start() ? swiper.autoplay.start() : swiper.autoplay.stop()) }
+      onClick={ swiper => swiper.autoplay.start() }
     >
       { images.map((image) => {
-        console.log('child', image);
+        // console.log('child', image);
         return (
           <SwiperSlide key={ image } className={ style.foto }>
-            <img className={ style.foto } src={ config.apiImages + image } alt="foto" />
+            <div className='swiper-zoom-container'>
+              <img className={ style.foto + ` ${propClassName}` + ' swiper-slide-zoomed' } src={ config.apiImages + image } alt="foto" />
+
+            </div>
           </SwiperSlide>
         );
       }) }
-      <button className='nextSlide'>v</button>
+      {/* <button className='nextSlide'>v</button> */ }
     </Swiper>
   );
 }
 
 SwiperCart.propTypes = {
-  images: PropTypes.array
+  images: PropTypes.array,
+  propClassName: PropTypes.string
 };
 
 export default SwiperCart;

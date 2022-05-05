@@ -29,12 +29,12 @@ const TableHeader = ({ columns }) => {
             <th
               key={ column }
               scope='col'
-              // onClick={
-              //   columns[column].iter
-              //     ? () => handleSort(columns[column].iter)
-              //     : undefined
-              // }
-              { ...{ role: columns[column].iter && 'button' } }
+            // onClick={
+            //   columns[column].iter
+            //     ? () => handleSort(columns[column].iter)
+            //     : undefined
+            // }
+            // { ...{ role: columns[column].iter && 'button' } }
             >
               { columns[column].name }
               { columns[column].func ? `: ${columns[column].func}` : '' }{ ' ' }

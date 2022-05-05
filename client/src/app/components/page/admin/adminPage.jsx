@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteCatalogElement, getCatalogList, loadCatalogList } from '../../../store/catalog';
+import { loadCurrentUser } from '../../../store/user';
 import AdminForm from './adminForm';
 import AdmitCatalogTable from './admitCatalogTable';
 
@@ -10,6 +11,7 @@ const AdminPage = () => {
   const [editData, setEditData] = useState({});
   useEffect(() => {
     dispatch(loadCatalogList());
+    dispatch(loadCurrentUser());
   }, []);
 
   const handleEdit = (item) => {

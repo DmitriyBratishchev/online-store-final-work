@@ -5,3 +5,32 @@
 .container {
   max-width: 1492px;
 }
+
+h3 {
+  margin: 0;
+}
+
+.animate-wisible::before {
+  content: '';
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px -40px 20px 30px #eee;
+  background: #eee;
+  z-index: 100;
+  animation: wisible 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes wisible {
+  0% {
+    height: 100%;
+  }
+
+  100% {
+    height: 0;
+    box-shadow: none;
+  }
+}

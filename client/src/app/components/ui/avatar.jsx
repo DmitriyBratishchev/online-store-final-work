@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { getAvatar } from '../../store/user';
 
 const Avatar = ({ imageLink, width = '65' }) => {
+  const image = useSelector(getAvatar()) || `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1).toString(36).slice(-5)}.svg`;
   return (
     <img
-      src={ imageLink || `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
-        .toString(36)
-        .slice(-5)}.svg` }
+      src={ image }
       className='rounded-circle shadow-1-strong me-3'
       alt='avatar'
       width={ width }

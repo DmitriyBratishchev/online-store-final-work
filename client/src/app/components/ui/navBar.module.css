@@ -1,0 +1,14 @@
+.basketCount {
+  position: absolute;
+  font-family: 'Quicksand';
+  font-size: 14px;
+  background: #F44336;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 99px;
+  padding: 0 5px;
+  min-width: 20px;
+  height: 20px;
+  right: -2px;
+  top: -4px;
+}

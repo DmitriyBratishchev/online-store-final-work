@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import TextField from '../common/form/textField';
 import { validator } from '../../utils/validator';
 // import CheckBoxField from '../common/form/checkBoxField';
-import { useHistory } from 'react-router';
+// import { useHistory } from 'react-router';
 import CheckBoxField from '../common/form/checkBoxField';
-import { useDispatch } from 'react-redux';
-import { deleteAuthError, signUp } from '../../store/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteAuthError, getAuthError, signUp } from '../../store/user';
 
 const RegisterForm = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const dispatch = useDispatch();
-  // const loginError = useSelector(getAuthError());
+  const loginError = useSelector(getAuthError());
   const [data, setData] = useState({ email: '', password: '', name: '', licence: false });
   const [errors, setErrors] = useState({});
   const isValid = Object.keys(errors).length === 0;
@@ -94,8 +94,8 @@ const RegisterForm = () => {
     if (!isValid) return;
     dispatch(signUp(data));
     // await postDb(data);
-    const redirect = history.location.state ? history.location.state.from.pathname : '/';
-    history.push(redirect);
+    // const redirect = history.location.state ? history.location.state.from.pathname : '/';
+    // history.push(redirect);
     console.log('register data', data);
 
     // dispatch(login({ payload: data, redirect }));
@@ -143,7 +143,7 @@ const RegisterForm = () => {
       >
         Подтвердите <a>лицензионное соглашение</a>
       </CheckBoxField>
-      {/* { loginError && <p className='text-danger'>{ loginError }</p> } */ }
+      { loginError && <p className='text-danger'>{ loginError }</p> }
       <button disabled={ !isValid } className='btn btn-primary w-100 mx-auto'>
         Отправить
       </button>

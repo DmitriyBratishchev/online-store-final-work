@@ -10,14 +10,14 @@ const http = axios.create({
 });
 
 http.interceptors.request.use(async (req) => {
-  if (req.url.includes('catalog')) return req;
   console.log('interceptor req', req);
+  // if (req.url.includes('auth')) {
   const expiresDate = localStorageService.getTokenExpiresDate();
   const refreshToken = localStorageService.getRefreshToken();
   const isExpired = refreshToken && expiresDate < Date.now();
 
   if (isExpired) {
-    console.log('refresh token');
+    console.log('refresh token servece', refreshToken, expiresDate, expiresDate < Date.now());
     const data = await authService.refresh();
     localStorageService.setTokens(data);
   }
@@ -28,6 +28,7 @@ http.interceptors.request.use(async (req) => {
       Authorization: `Bearer ${accessToken}`
     };
   }
+  // }
 
   return req;
 }, (error) => {
