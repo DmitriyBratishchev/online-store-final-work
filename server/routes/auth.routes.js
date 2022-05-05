@@ -14,7 +14,7 @@ router.post('/signUp', [
     try {
       console.log('/signUp in try');
       const errors = validationResult(req)
-      console.log(errors);
+      console.log('error in try', errors);
       if (!errors.isEmpty()) {
         console.log('/signUp in try & error');
         return res.status(400).json({
@@ -28,6 +28,7 @@ router.post('/signUp', [
 
       const { email, password } = req.body
       const existingUser = await User.findOne({ email })
+      console.log('existingUser', existingUser);
 
       if (existingUser) {
         return res.status(400).json({
@@ -65,13 +66,15 @@ router.post('/signUp', [
 ])
 
 router.post('/signInWithPassword', [
-  check('email', 'Некорректный email.').normalizeEmail().isEmail(),
-  check('password', 'Минимальная длина пароля 8 символов.').isLength({ min: 8 }),
-  check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+/g),
+  // check('email', 'Некорректный email.').normalizeEmail().isEmail(),
+  // check('password', 'Минимальная длина пароля 8 символов.').isLength({ min: 8 }),
+  // check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+/g),
   async (req, res) => {
     try {
+      console.log('/signInWithPassword in true');
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
+        console.log('/signInWithPassword in true in if', errors);
         return res.status(400).json({
           error: {
             message: 'INVALID_DATA',
@@ -82,7 +85,9 @@ router.post('/signInWithPassword', [
       }
 
       const { email, password } = req.body
+      console.log('body', req.body);
       const existingUser = await User.findOne({ email })
+      console.log('existingUser', existingUser);
 
       if (!existingUser) {
         return res.status(400).json({
@@ -103,7 +108,7 @@ router.post('/signInWithPassword', [
         })
       }
 
-      const tokens = tokenService.generate({ _id: existingUser._id })
+      const tokens = tokenService.generate({ id: existingUser._id })
       await tokenService.save(existingUser._id, tokens.refreshToken)
 
       res.status(200).json({...tokens, userId: existingUser._id})
@@ -122,15 +127,19 @@ router.post('/token', async (req, res) => {
     const { refresh_token: refreshToken } = req.body
     const data = tokenService.validateRefresh(refreshToken)
     const dbToken = await tokenService.findToken(refreshToken)
+    console.log('data', data);
+    console.log('dbToken', dbToken);
+    console.log('data._id !== dbToken?.userId?.toString()', data.id, dbToken?.userId?.toString());
+    console.log('');
 
-    if (!data || !dbToken || data._id !== dbToken?.userId?.toString()) {
+    if (!data || !dbToken || data.id !== dbToken?.userId?.toString()) {
       return res.status(401).json({message: 'Unautorized'})
     }
 
-    const tokens = tokenService.generate({ id: data._id })
-    await tokenService.save(data._id, tokens.refreshToken)
+    const tokens = tokenService.generate({ id: data.id })
+    await tokenService.save(data.id, tokens.refreshToken)
 
-    res.status(200).send({...tokens, userId: data._id})
+    res.status(200).send({...tokens, userId: data.id})
 
   } catch (error) {
     res.status(500).json({

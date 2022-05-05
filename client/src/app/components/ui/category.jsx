@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { getCategories } from '../../store/categories';
+import { getCategoryNameById } from '../../store/categories';
 
 const Category = ({ _id }) => {
-  console.log('id', _id);
-  const categories = useSelector(getCategories());
-  if (categories.length) {
-    const category = categories.find(c => c._id === _id);
-    return <span>{ category.name }</span>;
+  const categoriesName = useSelector(getCategoryNameById(_id));
+  if (categoriesName) {
+    return <span>{ categoriesName }</span>;
   } else {
     return 'loading ...';
   }

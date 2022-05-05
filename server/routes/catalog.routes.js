@@ -9,9 +9,33 @@ const chalk = require('chalk')
 
 
 router.get('/', async (req, res) => {
-  console.log('catalog get');
+  const qwer = req.query
+  console.log('catalog get', qwer);
   try {
     const list = await Catalog.find()
+    res.status(200).send(list)
+  } catch (error) {
+    res.status(500).json({
+      message: 'На сервере произошла ошибка. Попробуйте позже.'
+    })
+  }
+})
+
+router.get('/:catalogId', async (req, res) => {
+  console.log('catalog get');
+  const { catalogId } = req.params
+  console.log('reqId', catalogId);
+  if (!catalogId) {
+    res.status(400).json({
+      error: {
+        message: 'BAD REQUEST',
+        code: 400
+      }
+    })
+  }
+  try {
+    const list = await Catalog.findById( catalogId )
+    console.log('list by id', list);
     res.status(200).send(list)
   } catch (error) {
     res.status(500).json({

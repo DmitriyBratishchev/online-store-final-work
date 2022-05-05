@@ -5,6 +5,11 @@ const catalogEndpoint = 'catalog/';
 const catalogService = {
   get: async () => {
     const { data } = await httpService.get(catalogEndpoint);
+    console.log('data in get catalog', data);
+    return data;
+  },
+  getProductById: async (productId) => {
+    const { data } = await httpService.get(catalogEndpoint + productId);
     return data;
   },
   create: async (payload) => {

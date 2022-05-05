@@ -4,6 +4,7 @@ import categoriesService from '../services/categories.service';
 const initialState = {
   entities: [],
   isLoading: true,
+  dateLoad: 0,
   error: null
 };
 
@@ -21,20 +22,26 @@ const categoriesSlice = createSlice({
     categoriesRequestedFiled: (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
+    },
+    setDateLoad: (state, action) => {
+      state.dateLoad = action.payload;
     }
   }
 });
 
 const { actions, reducer: categoriesReducer } = categoriesSlice;
-const { categoriesReceved, categoriesRequested, categoriesRequestedFiled } = actions;
+const { categoriesReceved, categoriesRequested, categoriesRequestedFiled, setDateLoad } = actions;
 
 // 'диспатчеры'
-export const loadCategoriesList = () => async (dispatch) => {
+export const loadCategoriesList = () => async (dispatch, getState) => {
+  const loadedDate = getState().categories.dateLoad;
+  console.log('content', loadedDate, Date.now());
+  if (Date.now() < (loadedDate + 1000 * 60)) return;
   dispatch(categoriesRequested());
   try {
     const content = await categoriesService.get();
-    console.log('content', content);
     dispatch(categoriesReceved(content));
+    dispatch(setDateLoad(Date.now()));
   } catch (error) {
     console.log('error', error);
     dispatch(categoriesRequestedFiled(error));
