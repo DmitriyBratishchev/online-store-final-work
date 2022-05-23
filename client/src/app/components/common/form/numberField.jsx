@@ -8,15 +8,14 @@ const NumberField = ({
   value,
   required,
   placeholder,
+  className,
   onlyPositive = false,
   error,
   onChange,
   onFocus
 }) => {
   const handleChange = ({ target }) => {
-    console.log('target.value', target.value, typeof target.value, /[^0-9]/g.test(target.value));
     if (/[^0-9]/g.test(target.value)) {
-      console.log('in if');
       onChange({ name: target.name, value: value });
     } else {
       onChange({ name: target.name, value: toNumber(target.value) });
@@ -25,9 +24,8 @@ const NumberField = ({
   const getInputClasses = () => {
     return 'form-control' + (error ? ' is-invalid' : '');
   };
-  console.log('value', value, typeof value);
   return (
-    <div className='mb-4'>
+    <div className={ className || 'mb-4' }>
       { label && (
         <label htmlFor={ name } className='form-label'>
           { label } { required && <span className='text-danger'>*</span> }
@@ -57,6 +55,7 @@ NumberField.propTypes = {
   value: PropTypes.any,
   required: PropTypes.bool,
   placeholder: PropTypes.string,
+  className: PropTypes.string,
   onlyPositive: PropTypes.bool,
   error: PropTypes.string,
   onChange: PropTypes.func,

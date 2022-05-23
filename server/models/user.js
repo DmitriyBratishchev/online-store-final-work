@@ -23,12 +23,3 @@ const schema = new Schema({
 })
 
 module.exports = model('User', schema)
-
-// const user = {
-//   name: "Dima",
-//   email: "d@mail.ru",
-//   password: "Test1234",
-//   image: "http//image",
-//   basket: [{ productId: "Gzk50Zs", amount: 2 }],
-//   favorites: ["Gzk50Zs"]
-// }

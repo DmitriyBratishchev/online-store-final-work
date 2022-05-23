@@ -4,10 +4,20 @@
 
 .container {
   max-width: 1492px;
+  min-height: calc(100vh - 62px);
+  padding-bottom: 50px;
 }
 
 h3 {
   margin: 0;
+}
+
+.paragraph {
+  text-indent: 40px;
+}
+
+.btn-group>.btn:focus {
+  box-shadow: none;
 }
 
 .animate-wisible::before {

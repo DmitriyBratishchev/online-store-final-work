@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '../common/form/textField';
 import { validator } from '../../utils/validator';
-// import CheckBoxField from '../common/form/checkBoxField';
-// import { useHistory } from 'react-router';
 import CheckBoxField from '../common/form/checkBoxField';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAuthError, getAuthError, signUp } from '../../store/user';
 
 const RegisterForm = () => {
-  // const history = useHistory();
   const dispatch = useDispatch();
   const loginError = useSelector(getAuthError());
   const [data, setData] = useState({ email: '', password: '', name: '', licence: false });
@@ -77,32 +74,12 @@ const RegisterForm = () => {
     });
   };
 
-  // const postDb = async (data) => {
-  //   await fetch('http://localhost:8080/api/auth/signUp', {
-  //     method: 'POST',
-  //     body: JSON.stringify(data),
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   }).then((res) => console.log('res', res)).catch((reas) => console.log('reas', reas)).finally(console.log('finali'));
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isValid = validate();
-    console.log('isValid', isValid);
     if (!isValid) return;
     dispatch(signUp(data));
-    // await postDb(data);
-    // const redirect = history.location.state ? history.location.state.from.pathname : '/';
-    // history.push(redirect);
-    console.log('register data', data);
-
-    // dispatch(login({ payload: data, redirect }));
   };
-  console.log('error', errors);
-  // console.log('hist state', history.location.state?.from?.pathname);
-  console.log('reg state', data);
   return (
     <form onSubmit={ handleSubmit }>
       <TextField

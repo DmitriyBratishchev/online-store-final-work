@@ -1,26 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TableHeader = ({ columns }) => {
-  // const handleSort = (item) => {
-  //   if (selectedSort.iter === item) {
-  //     onSort((selectedSort) => ({
-  //       ...selectedSort,
-  //       order: selectedSort.order === 'asc' ? 'desc' : 'asc'
-  //     }));
-  //   } else {
-  //     onSort({ iter: item, order: 'asc' });
-  //   }
-  // };
-  // const getIconSort = (item) => {
-  //   return selectedSort.iter !== item ? (
-  //     ''
-  //   ) : selectedSort.order === 'asc' ? (
-  //     <i className='bi bi-caret-up-fill'></i>
-  //   ) : (
-  //     <i className='bi bi-caret-down-fill'></i>
-  //   );
-  // };
+const TableHeader = ({ columns, onSort, selectedSort }) => {
+  const handleSort = (item) => {
+    if (selectedSort.path === item) {
+      onSort((selectedSort) => ({
+        ...selectedSort,
+        order: selectedSort.order === 'asc' ? 'desc' : 'asc'
+      }));
+    } else {
+      onSort({ path: item, order: 'asc' });
+    }
+  };
+  const getIconSort = (item) => {
+    return selectedSort?.path !== item
+      ? ''
+      : selectedSort?.order === 'asc'
+        ? <i className='bi bi-caret-up-fill'></i>
+        : <i className='bi bi-caret-down-fill'></i>;
+  };
   return (
     <thead>
       <tr>
@@ -29,16 +27,16 @@ const TableHeader = ({ columns }) => {
             <th
               key={ column }
               scope='col'
-            // onClick={
-            //   columns[column].iter
-            //     ? () => handleSort(columns[column].iter)
-            //     : undefined
-            // }
-            // { ...{ role: columns[column].iter && 'button' } }
+              onClick={
+                columns[column].path
+                  ? () => handleSort(columns[column].path)
+                  : undefined
+              }
+              { ...{ role: columns[column].path && 'button' } }
             >
-              { columns[column].name }
-              { columns[column].func ? `: ${columns[column].func}` : '' }{ ' ' }
-              {/* { getIconSort(columns[column].iter) } */ }
+              { columns[column].name }{ ' ' }
+              {/* { columns[column].func ? `: ${columns[column].func}` : '' } */ }
+              { getIconSort(columns[column].path) }
             </th>
           );
         }) }
@@ -48,8 +46,8 @@ const TableHeader = ({ columns }) => {
 };
 
 TableHeader.propTypes = {
-  // onSort: PropTypes.func.isRequired,
-  // selectedSort: PropTypes.object.isRequired,
+  onSort: PropTypes.func,
+  selectedSort: PropTypes.object,
   columns: PropTypes.object.isRequired
 };
 

@@ -25,25 +25,58 @@ const categoriesSlice = createSlice({
     },
     setDateLoad: (state, action) => {
       state.dateLoad = action.payload;
+    },
+    editCategoryReceved: (state, action) => {
+      const editIndex = state.entities.findIndex(e => e._id === action.payload._id);
+      state.entities[editIndex] = action.payload;
+      state.isLoading = false;
+    },
+    createCategoryReceved: (state, action) => {
+      state.entities.push(action.payload);
+      state.isLoading = false;
     }
   }
 });
 
 const { actions, reducer: categoriesReducer } = categoriesSlice;
-const { categoriesReceved, categoriesRequested, categoriesRequestedFiled, setDateLoad } = actions;
+const {
+  categoriesReceved,
+  categoriesRequested,
+  categoriesRequestedFiled,
+  setDateLoad,
+  editCategoryReceved,
+  createCategoryReceved
+} = actions;
 
 // 'диспатчеры'
 export const loadCategoriesList = () => async (dispatch, getState) => {
   const loadedDate = getState().categories.dateLoad;
-  console.log('content', loadedDate, Date.now());
   if (Date.now() < (loadedDate + 1000 * 60)) return;
   dispatch(categoriesRequested());
   try {
-    const content = await categoriesService.get();
-    dispatch(categoriesReceved(content));
+    const { data } = await categoriesService.get();
+    dispatch(categoriesReceved(data));
     dispatch(setDateLoad(Date.now()));
   } catch (error) {
-    console.log('error', error);
+    dispatch(categoriesRequestedFiled(error));
+  }
+};
+
+export const updatedCategory = (categoryData) => async (dispatch) => {
+  dispatch(categoriesRequested());
+  try {
+    const { data } = await categoriesService.edit(categoryData);
+    dispatch(editCategoryReceved(data));
+  } catch (error) {
+    dispatch(categoriesRequestedFiled(error));
+  }
+};
+
+export const createCategory = (categoryData) => async (dispatch) => {
+  try {
+    const { data } = await categoriesService.create(categoryData);
+    dispatch(createCategoryReceved(data));
+  } catch (error) {
     dispatch(categoriesRequestedFiled(error));
   }
 };

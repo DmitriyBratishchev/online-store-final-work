@@ -9,12 +9,9 @@ import App from './app/app.jsx';
 import reportWebVitals from './reportWebVitals';
 import { Router } from 'react-router-dom';
 import history from './app/utils/history';
-// import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { createStore } from './app/store/createStore.js';
 import { Provider } from 'react-redux';
-// import { FreeMode, Mousewheel, Scrollbar } from 'swiper';
-// import './css/screen.css';
 
 const store = createStore();
 
