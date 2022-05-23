@@ -2,8 +2,8 @@
   box-sizing: border-box;
 }
 
-html{
-  height: 100%;
+html {
+  height: 100vh;
 }
 
 body {
@@ -13,7 +13,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100%;
+  height: 100vh;
+  overflow: overlay;
+  overflow-x: hidden;
   /* overflow: hidden; */
 }
 
@@ -24,4 +26,8 @@ code {
 
 a {
   text-decoration: none;
+}
+
+.btn-group>.btn:focus {
+  box-shadow: none !important;
 }

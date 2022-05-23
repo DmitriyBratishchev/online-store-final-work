@@ -4,7 +4,6 @@ const imageEndpoint = 'image/';
 
 const imageService = {
   post: async (payload) => {
-    console.log('image service', payload);
     const fileImages = new FormData();
     fileImages.append('image', payload);
     const { data } = await httpService.post(imageEndpoint, fileImages);

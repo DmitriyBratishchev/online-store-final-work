@@ -1,5 +1,5 @@
 export function validator(data, config) {
-  console.log('------------------------------------------------');
+  // console.log('------------------------------------------------');
   const errors = {};
   function validate(validateMethod, data, { rule, message }) {
     if (rule) {
@@ -16,14 +16,14 @@ export function validator(data, config) {
   }
   for (const fieldName in data) {
     for (const validateMethod in config[fieldName]) {
-      console.log('==========');
-      console.log(fieldName, validateMethod);
+      // console.log('==========');
+      // console.log(fieldName, validateMethod);
       const error = validate(
         validateMethod,
         data[fieldName],
         config[fieldName][validateMethod]
       );
-      console.log(error || 'валидно');
+      // console.log(error || 'валидно');
       if (error && !errors[fieldName]) {
         errors[fieldName] = error;
       }

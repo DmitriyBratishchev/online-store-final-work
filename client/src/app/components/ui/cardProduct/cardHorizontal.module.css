@@ -7,30 +7,7 @@
 }
 
 .foto {
+  min-width: 200px;
   max-width: 100%;
   max-height: 200px;
-}
-
-div h3.textRed {
-  color: rgb(0, 255, 21);
-  font-size: 40px;
-}
-
-.wisible {
-  opacity: 0;
-  animation-name: onwisible;
-  animation-fill-mode: forwards;
-  animation-duration: 2s;
-  /* animation-delay: ; */
-}
-
-@keyframes onwisible {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-
 }

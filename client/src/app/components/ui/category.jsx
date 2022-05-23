@@ -8,7 +8,7 @@ const Category = ({ _id }) => {
   if (categoriesName) {
     return <span>{ categoriesName }</span>;
   } else {
-    return 'loading ...';
+    return 'нет данных.';
   }
 };
 

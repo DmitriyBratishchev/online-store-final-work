@@ -4,7 +4,6 @@ const auth = require('../middleware/auth.middleware')
 const router = express.Router({ mergeParams: true })
 
 router.get('/:userId', auth, async (req, res) => {
-  console.log('/user/id get');
   try {
     const { userId } = req.params
     const userById = await User.findById(userId)
@@ -26,7 +25,6 @@ router.get('/:userId', auth, async (req, res) => {
   // }
 
   router.patch('/:userId', auth, async (req, res) => {
-    console.log('/user/id patch');
     try {
       const { userId } = req.params
 

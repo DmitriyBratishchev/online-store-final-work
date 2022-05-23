@@ -8,15 +8,12 @@ const router = express.Router({ mergeParams: true })
 router.post('/signUp', [
   check('email', 'Некорректный email.').isEmail(),
   check('password', 'Минимальная длина пароля 8 символов.').isLength({ min: 8 }),
-  // check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+/g),
+  check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+?/g),
+
   async (req, res) => {
-    console.log('/signUp');
     try {
-      console.log('/signUp in try');
       const errors = validationResult(req)
-      console.log('error in try', errors);
       if (!errors.isEmpty()) {
-        console.log('/signUp in try & error');
         return res.status(400).json({
           error: {
             message: 'INVALID_DATA',
@@ -28,7 +25,6 @@ router.post('/signUp', [
 
       const { email, password } = req.body
       const existingUser = await User.findOne({ email })
-      console.log('existingUser', existingUser);
 
       if (existingUser) {
         return res.status(400).json({
@@ -57,7 +53,6 @@ router.post('/signUp', [
 
 
     } catch (error) {
-      console.log('error sign up');
       res.status(500).json({
         message: 'На сервере произошла ошибка. Попробуйте позже.'
       })
@@ -66,15 +61,13 @@ router.post('/signUp', [
 ])
 
 router.post('/signInWithPassword', [
-  // check('email', 'Некорректный email.').normalizeEmail().isEmail(),
-  // check('password', 'Минимальная длина пароля 8 символов.').isLength({ min: 8 }),
-  // check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+/g),
+  check('email', 'Некорректный email.').normalizeEmail().isEmail(),
+  check('password', 'Минимальная длина пароля 8 символов.').isLength({ min: 8 }),
+  check('password', 'Пароль должен содержать хотя бы 1 цифру.').matches(/\d+?/g),
   async (req, res) => {
     try {
-      console.log('/signInWithPassword in true');
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
-        console.log('/signInWithPassword in true in if', errors);
         return res.status(400).json({
           error: {
             message: 'INVALID_DATA',
@@ -85,9 +78,7 @@ router.post('/signInWithPassword', [
       }
 
       const { email, password } = req.body
-      console.log('body', req.body);
       const existingUser = await User.findOne({ email })
-      console.log('existingUser', existingUser);
 
       if (!existingUser) {
         return res.status(400).json({
@@ -127,13 +118,9 @@ router.post('/token', async (req, res) => {
     const { refresh_token: refreshToken } = req.body
     const data = tokenService.validateRefresh(refreshToken)
     const dbToken = await tokenService.findToken(refreshToken)
-    console.log('data', data);
-    console.log('dbToken', dbToken);
-    console.log('data._id !== dbToken?.userId?.toString()', data.id, dbToken?.userId?.toString());
-    console.log('');
 
     if (!data || !dbToken || data.id !== dbToken?.userId?.toString()) {
-      return res.status(401).json({message: 'Unautorized'})
+      return res.status(401).json({ error: { message: 'Unautorized 401', code: 401 } })
     }
 
     const tokens = tokenService.generate({ id: data.id })

@@ -14,7 +14,6 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
   useEffect(() => setValueOnDragable(value), [value]);
 
   const handleChangeFile = (event) => {
-    console.log('form file', event);
     event.preventDefault();
     event.stopPropagation();
     const files = [...event.target.files];
@@ -26,18 +25,14 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
   const handleDelete = async (event, image) => {
     event.preventDefault();
     try {
-      console.log('delete click', event, image);
       const deletedFile = await imageService.remove(image);
-      console.log('deleted File', deletedFile);
       const newImageArray = value.filter(i => i !== deletedFile);
       onChange({ name, value: newImageArray });
     } catch (error) {
-      console.log('error delete', error);
     }
   };
 
   const handleDrop = (event, index) => {
-    console.log('files drop', event);
     event.preventDefault();
     event.stopPropagation();
     if (index === undefined && dragIndex !== null) {
@@ -46,14 +41,12 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
     if (dragIndex === null) {
       const files = [...event.dataTransfer.files];
       if (files.length !== 0) {
-        console.log('files drop', files);
         files.forEach(async (oneOfImages) => {
           onChangeFile(oneOfImages);
         });
       }
     };
     if (index !== undefined && dragIndex !== null) {
-      console.log('index drop', index, dragIndex);
       const newValue = [...value];
       newValue.splice(index >= dragIndex ? index + 1 : index, 0, newValue[dragIndex]);
       newValue.splice(index >= dragIndex ? dragIndex : dragIndex + 1, 1);
@@ -63,23 +56,19 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
   };
 
   const fileDragEnter = (event) => {
-    console.log('hendleDragEnter', event);
     event.preventDefault();
     event.stopPropagation();
   };
 
   const fileDragLeave = (event) => {
-    console.log('hendleDragLeave');
     event.preventDefault();
     event.stopPropagation();
   };
 
   const fileDragOver = (event, index) => {
-    console.log('hendleDragOver', index, dragIndex);
     event.preventDefault();
     event.stopPropagation();
     if (index !== undefined && dragIndex !== null) {
-      console.log('index drop', index, dragIndex);
       const newValue = [...value];
       newValue.splice(index >= dragIndex ? index + 1 : index, 0, newValue[dragIndex]);
       newValue.splice(index >= dragIndex ? dragIndex : dragIndex + 1, 1);
@@ -108,6 +97,7 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
           ref={ fileInput }
           onChange={ (e) => handleChangeFile(e) }
         />
+        { value.length > 1 && <div style={ { opacity: '.8' } }>Порядок отображения фото можно изменить перетаскиванием.</div> }
         <div className={ fileStyle.fotoContainer } ref={ dragContainer }>
           { value.length !== 0 && valueOnDragable.map((image, index) => {
             return (
@@ -121,6 +111,7 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
               >
                 <div className={ fileStyle.foto } style={ { backgroundImage: `url(${config.apiImages + image})` } }></div>
                 <div role={ 'button' } type='button' className={ fileStyle.delete } onClick={ (e) => handleDelete(e, image) }><i className="bi bi-x-circle-fill text-danger"></i></div>
+                <div className={ fileStyle.indexNumber } >{ index + 1 }</div>
               </div>
             );
           }) }

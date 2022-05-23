@@ -32,21 +32,21 @@ const { basketReceved, basketRequested, basketRequestedFiled } = actions;
 export const loadBasketList = () => async (dispatch, getState) => {
   const userBasket = getState().user.entities.basket;
   const arrayBasketIds = userBasket.map(el => el._id);
-  console.log('arrayBasketIds in load', arrayBasketIds);
   dispatch(basketRequested());
   try {
     const content = await Promise.all(arrayBasketIds.map(id => catalogService.getProductById(id))).then(res => res);
-    console.log('content in load', content);
     const basketList = content.map((product, index) => ({ ...product, count: userBasket[index].count }));
     dispatch(basketReceved(basketList));
   } catch (error) {
-    console.log('error', error);
     dispatch(basketRequestedFiled(error));
   }
 };
 
 // 'Селекторы'
 export const getBasketList = () => (state) => state.basket.entities;
-// export const getCategoryNameById = (_id) => (state) => state.categories.entities.filter(c => c._id === _id)[0]?.name;
+export const getIsLoadingBasket = () => (state) => state.basket.isLoading;
+export const getCountProductNames = () => (state) => state.basket.entities.length;
+export const getTotalCost = () => (state) => state.basket.entities
+  .reduce((acc, el) => acc + (el.count * el.price || 0), 0).toFixed(2) || '0';
 
 export default basketReducer;

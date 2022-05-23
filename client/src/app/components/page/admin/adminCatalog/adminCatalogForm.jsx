@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createCatalogElement, updatedCatalogElement } from '../../../store/catalog';
-import { getCategories, loadCategoriesList } from '../../../store/categories';
-import { validator } from '../../../utils/validator';
-import NumberField from '../../common/form/numberField';
-import SelectField from '../../common/form/selectField';
-import TextField from '../../common/form/textField';
-import imageService from '../../../services/image.service';
-import FileField from '../../common/form/fileField';
+import { createCatalogElement, updatedCatalogElement } from '../../../../store/catalog';
+import { getCategories, loadCategoriesList } from '../../../../store/categories';
+import { validator } from '../../../../utils/validator';
+import NumberField from '../../../common/form/numberField';
+import SelectField from '../../../common/form/selectField';
+import TextField from '../../../common/form/textField';
+import imageService from '../../../../services/image.service';
+import FileField from '../../../common/form/fileField';
+import TextAreaField from '../../../common/form/textAreaField';
 
-const AdminForm = ({ editData = {} }) => {
-  console.log('editData in Admin', editData);
+const AdminCatalogForm = ({ editData = {} }) => {
   const initialData = {
     name: '',
     price: 0,
+    description: '',
     numberOfGoods: 0,
     category: '',
     images: []
@@ -44,8 +45,6 @@ const AdminForm = ({ editData = {} }) => {
     setEdit(false);
     setData(initialData);
   };
-
-  console.log('categories', categories);
 
   const validatorConfig = {
     name: {
@@ -86,7 +85,6 @@ const AdminForm = ({ editData = {} }) => {
   };
 
   const handleChange = (target) => {
-    console.log('handleChange in admin', target);
     setData((prev) => ({
       ...prev,
       [target.name]: target.value
@@ -94,9 +92,7 @@ const AdminForm = ({ editData = {} }) => {
   };
 
   const handleChangeFile = async (file) => {
-    // console.log('form file', file);
     const image = await imageService.post(file);
-    // console.log('image', image);
     setData((prev) => ({
       ...prev,
       images: [...prev.images, image]
@@ -107,21 +103,17 @@ const AdminForm = ({ editData = {} }) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    console.log('Submit', data);
     dispatch(isEdit ? updatedCatalogElement(data) : createCatalogElement(data));
     if (!isEdit) {
       setData(initialData);
     };
   };
-  console.log('data', data);
   return (
     <>
       { isEdit
         ? <div className='d-flex justify-content-between'>
           <h3>Изменить</h3>
-          {/* <button > */ }
           <i className="bi bi-file-earmark-plus fs-3 text-primary" onClick={ cancelEdit } role='button'></i>
-          {/* </button> */ }
         </div>
         : <h3>Создать</h3> }
       <form onSubmit={ handleSubmit } noValidate encType='multipart/form-data'>
@@ -156,6 +148,12 @@ const AdminForm = ({ editData = {} }) => {
           error={ errors.price }
           required={ true }
         />
+        <TextAreaField
+          label='Описание товара'
+          name='description'
+          value={ data.description }
+          onChange={ handleChange }
+        />
         <NumberField
           label='Количество'
           name='numberOfGoods'
@@ -180,8 +178,8 @@ const AdminForm = ({ editData = {} }) => {
   );
 };
 
-AdminForm.propTypes = {
+AdminCatalogForm.propTypes = {
   editData: PropTypes.object
 };
 
-export default AdminForm;
+export default AdminCatalogForm;

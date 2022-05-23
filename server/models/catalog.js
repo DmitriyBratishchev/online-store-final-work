@@ -12,6 +12,9 @@ const schema = new Schema({
   numberOfGoods: {
     type: Number
   },
+  description: {
+    type: String
+  },
   category: {
     type: Schema.Types.ObjectId,
     ref: 'Categories',
@@ -25,12 +28,3 @@ const schema = new Schema({
 })
 
 module.exports = model('Catalog', schema)
-
-
-// {
-//   "name": "Стол",
-//   "price": 300,
-//   "numberOfGoods": 5,
-//   "category": "3",
-//   "id": "Gzk50Zs"
-// },

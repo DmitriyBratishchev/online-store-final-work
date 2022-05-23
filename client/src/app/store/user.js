@@ -3,19 +3,9 @@ import authService from '../services/auth.service';
 import localStorageService, { setTokens } from '../services/localStorage.service';
 import userService from '../services/user.service';
 import history from '../utils/history';
-// import { getRandomNumber } from '../utils/getRandomNumber';
+import { generateAuthError } from '../utils/generateAuthError';
 
-const initialState = localStorageService.getUserId() ? {
-  entities: {
-    basket: [],
-    favorites: []
-  },
-  isloading: true,
-  error: null,
-  auth: { userId: localStorageService.getUserId() },
-  isLoggedIn: true,
-  dataLoaded: false
-} : {
+const plainState = {
   entities: {
     basket: [],
     favorites: []
@@ -26,6 +16,10 @@ const initialState = localStorageService.getUserId() ? {
   isLoggedIn: false,
   dataLoaded: false
 };
+
+const initialState = localStorageService.getUserId()
+  ? { ...plainState, auth: { userId: localStorageService.getUserId() } }
+  : plainState;
 
 const userSlice = createSlice({
   name: 'user',
@@ -51,16 +45,17 @@ const userSlice = createSlice({
     authRequestFaild: (state, action) => {
       state.error = action.payload;
     },
-    userLoggedOut: (state) => {
-      console.log('state', state);
-      console.log('initialState', initialState);
-      state = initialState;
-      // state.auth = null;
-      // state.isLoggedIn = false;
-      // state.dataLoaded = false;
+    userLoggedOut: (state, action) => {
+      state.entities = action.payload.entities;
+      state.auth = null;
+      state.isLoggedIn = false;
+      state.dataLoaded = false;
     },
     updateBasket: (state, action) => {
       state.entities.basket = action.payload;
+    },
+    updateFavorit: (state, action) => {
+      state.entities.favorites = action.payload;
     },
     updateUserDataRequested: (state) => {
       state.isloading = true;
@@ -85,6 +80,7 @@ const {
   authRequestFaild,
   userLoggedOut,
   updateBasket,
+  updateFavorit,
   updateUserDataReceved,
   updateUserDataRequested,
   updateUserDataFaild
@@ -92,60 +88,95 @@ const {
 
 const authRequested = createAction('users/requested');
 const userCreateRequested = createAction('users/userCreateRequested');
-// const createUserFailed = createAction('users/createUserFailed');
 
 // диспатчер вход по логину и паролю
-export const login = ({ payload, redirect }) => async (dispatch) => {
+export const login = ({ payload, redirect }) => async (dispatch, getState) => {
+  const isAuth = getState().user.auth;
   const { email, password } = payload;
-  console.log('payload login', payload);
   dispatch(authRequested());
   try {
     // проверка данных и получение токенов
     const { data } = await authService.login({ email, password });
-    dispatch(authRequestSuccess({ userId: data.userId }));
-    console.log('payload login data', data, 'redirect', redirect);
+    await dispatch(authRequestSuccess({ userId: data.userId }));
     // сохранение токенов
     setTokens(data);
     // получение данных о пользователе
     const user = await userService.getCurrentUser();
-    dispatch(userReceved(user));
+    // проверка и сохранение корзины и избранного изменённых до входа по логину
+    const currentBasket = getState().user.entities.basket;
+    const currentFavorites = getState().user.entities.favorites;
+    if (!isAuth && (currentBasket !== 0 || currentFavorites !== 0)) {
+      const getUserWithCurrentState = {
+        ...user,
+        basket: summaryBasket(user.basket, currentBasket),
+        favorites: summaryFavorites(user.favorites, currentFavorites)
+      };
+      const data = await userService.update(getUserWithCurrentState);
+      await dispatch(userReceved(data));
+    } else {
+      dispatch(userReceved(user));
+    }
     history.push('/catalog');
   } catch (error) {
-    const { code, message } = error.response.data.error;
+    const { code, message, errors } = error.response.data.error;
     if (code === 400) {
-      console.log('message', message);
-      // const errorMessage = generateAuthError(message);
-      const errorMessage = 'что-то пошло не так';
-      dispatch(authRequestFaild(errorMessage));
+      if (errors) {
+        dispatch(authRequestFaild(errors[0].msg));
+      } else {
+        const errorMessage = generateAuthError(message);
+        dispatch(authRequestFaild(errorMessage));
+      }
     } else {
       dispatch(authRequestFaild(message));
     }
   }
 };
 
+const summaryBasket = (arr1, arr2) => {
+  let summaryArr = [...arr1];
+  arr2.forEach(el => {
+    const index = summaryArr.findIndex(n => n._id === el._id);
+    index === -1
+      ? summaryArr = [...summaryArr, el]
+      : summaryArr[index] = { ...el, count: el.count + summaryArr[index].count };
+  });
+  return summaryArr;
+};
+
+const summaryFavorites = (arr1, arr2) => {
+  const filteredArr2 = arr2.filter(el => arr1.indexOf(el) === -1);
+  return [...arr1, ...filteredArr2];
+};
+
 // диспатчер создание нового пользователя
-export const signUp = ({ email, password, ...rest }) => async (dispatch) => {
+export const signUp = ({ email, password, ...rest }) => async (dispatch, getState) => {
+  const isAuth = getState().user.auth;
+  const basket = !isAuth ? getState().user.entities.basket : [];
+  const favorites = !isAuth ? getState().user.entities.favorites : [];
   dispatch(userRequested());
-  console.log('in reducer');
   try {
     const { data } = await authService.register({ email, password });
+    dispatch(authRequestSuccess({ userId: data.userId }));
     // запись токенов в local storage
     setTokens(data);
-    // dispatch(authRequestSuccess({ userId: data.userId }));
     // вызов функции создания нового пользователя
     dispatch(createUser({
       _id: data.userId,
       email,
+      basket,
+      favorites,
       image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1).toString(36).slice(-5)}.svg`,
       ...rest
     }));
   } catch (error) {
-    const { code, message } = error.response.data.error;
+    const { code, message, errors } = error.response.data.error;
     if (code === 400) {
-      console.log('message', message);
-      // const errorMessage = generateAuthError(message);
-      const errorMessage = 'что-то пошло не так Пользователь существует';
-      dispatch(authRequestFaild(errorMessage));
+      if (errors) {
+        dispatch(authRequestFaild(errors[0].msg));
+      } else {
+        const errorMessage = generateAuthError(message);
+        dispatch(authRequestFaild(errorMessage));
+      }
     } else {
       dispatch(authRequestFaild(message));
     }
@@ -158,8 +189,6 @@ function createUser(payload) {
     try {
       // запросна создание нового пользователя
       const content = await userService.create(payload);
-      console.log('createUser content', content);
-      // запись данных в state
       dispatch(userReceved(content));
       history.push('/catalog');
     } catch (error) {
@@ -169,48 +198,56 @@ function createUser(payload) {
 };
 
 export const updateUserData = (localData) => async (dispatch) => {
-  console.log('start update');
+  if (!localData.auth) return;
   dispatch(updateUserDataRequested());
   try {
-    const data = await userService.update(localData);
-    console.log('in update res', data);
+    const data = await userService.update(localData.entities);
     dispatch(updateUserDataReceved(data));
-    // history.push(`/users/${content._id}`);
   } catch (error) {
     dispatch(updateUserDataFaild(error.message));
   }
 };
 
-export const logOut = () => (dispatch) => {
-  console.log('logout');
+export const logOut = () => async (dispatch) => {
   localStorageService.removeAuthData();
-  dispatch(userLoggedOut());
+  dispatch(userLoggedOut(initialState));
   history.push('/');
 };
 
 export const loadCurrentUser = () => async (dispatch) => {
-  dispatch(userRequested());
-  try {
-    const content = await userService.getCurrentUser();
-    dispatch(userReceved(content));
-  } catch (error) {
-    dispatch(userRequestFiled(error.message));
+  if (localStorageService.getUserId()) {
+    dispatch(userRequested());
+    try {
+      const content = await userService.getCurrentUser();
+      dispatch(userReceved(content));
+    } catch (error) {
+      dispatch(logOut());
+      dispatch(userRequestFiled(error.message));
+    }
   }
 };
 
 // работа с корзиной пользователя
 export const editBasket = (dataProduct) => async (dispatch, getState) => {
   let basket = [...getState().user.entities.basket];
-  console.log('basket in user dispatcher start', basket, dataProduct);
   const arrIdProduct = basket.map(el => el._id);
   if (arrIdProduct.includes(dataProduct._id)) {
     basket = basket.map(el => el._id === dataProduct._id ? { ...el, count: dataProduct.count } : el).filter(el => el.count !== 0);
   } else {
     basket.push(dataProduct);
   }
-  console.log('basket in user dispatcher end', basket);
   dispatch(updateBasket(basket));
-  await dispatch(updateUserData(getState().user.entities));
+  await dispatch(updateUserData(getState().user));
+};
+
+// работа с избранным пользователя
+export const editFavorit = (idProduct) => async (dispatch, getState) => {
+  let favorit = [...getState().user.entities.favorites];
+  favorit.indexOf(idProduct) !== -1
+    ? favorit = favorit.filter(el => el !== idProduct)
+    : favorit.push(idProduct);
+  dispatch(updateFavorit(favorit));
+  await dispatch(updateUserData(getState().user));
 };
 
 export const deleteAuthError = () => (dispatch) => {
@@ -222,24 +259,15 @@ export const getUser = () => (state) => state.user.entities;
 export const getCurrentUserId = () => (state) => state.user.auth?.userId;
 export const getAuthError = () => (state) => state.user.error;
 export const getAvatar = () => (state) => state.user.entities?.image;
+export const getUserName = () => (state) => state.user.entities?.name || '';
 
 export const getCountByIdProduct = (id) => (state) => state.user.entities.basket.find(product => product._id === id)?.count || 0;
 export const getBasketLength = () => (state) => state.user.entities.basket.reduce((acc, el) => acc + el.count, 0);
-// export const getUserById = (userId) => (state) => {
-//   if (state.user.entities.length) {
-//     return state.user.entities.find(u => u._id === userId);
-//   } else return null;
-// };
-// export const getUser = () => (state) => state.users.entities;
-// export const getCurrentUser = () => (state) => {
-//   if (state.user.entities.length) {
-//     return state.user.entities.find(u => u._id === state.users.auth.userId);
-//   } else return null;
-// };
+export const getIsFavoritById = (id) => (state) => state.user.entities.favorites.indexOf(id) !== -1;
+export const getFavoritesLength = () => (state) => state.user.entities.favorites.length;
 
-export const getUsersLoadingStatus = () => (state) => state.users.isloading;
-export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
-export const getDataStatus = () => (state) => state.users.dataLoaded;
-// export const getAuthError = () => (state) => state.users.error || [];
+export const getUsersLoadingStatus = () => (state) => state.user.isloading;
+export const getIsLoggedIn = () => (state) => state.user.isLoggedIn;
+export const getDataStatus = () => (state) => state.user.dataLoaded;
 
 export default userReducer;

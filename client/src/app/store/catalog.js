@@ -52,10 +52,8 @@ export const loadCatalogList = () => async (dispatch, getState) => {
   dispatch(catalogRequested());
   try {
     const content = await catalogService.get();
-    console.log('content', content);
     dispatch(catalogReceved(content));
   } catch (error) {
-    console.log('error', error);
     dispatch(catalogRequestedFiled(error));
   }
 };
@@ -64,23 +62,18 @@ export const createCatalogElement = (data) => async (dispatch) => {
   dispatch(catalogRequested());
   try {
     const content = await catalogService.create(data);
-    console.log('content', content);
     dispatch(addCatalogElement(content));
   } catch (error) {
-    console.log('error', error);
     dispatch(catalogRequestedFiled(error));
   }
 };
 
 export const updatedCatalogElement = (data) => async (dispatch) => {
   dispatch(catalogRequested());
-  console.log('data inedit', data);
   try {
     const content = await catalogService.edit(data);
-    console.log('content', content);
     dispatch(editCatalogElement(content));
   } catch (error) {
-    console.log('error', error);
     dispatch(catalogRequestedFiled(error));
   }
 };
@@ -91,12 +84,22 @@ export const deleteCatalogElement = (data) => async (dispatch) => {
     await catalogService.remove(data);
     dispatch(removeCatalogElement(data));
   } catch (error) {
-    console.log('error', error);
     dispatch(catalogRequestedFiled(error));
   }
 };
 
 // селекторы
 export const getCatalogList = () => (state) => state.catalog.entities;
+
+export const getCatalogListAfterFilterCategory = (catalog) => (state) => {
+  const categoriesIsTrueArray = state.filter.entities.categories
+    .reduce((acc, cat) => (cat && cat.checked) ? [...acc, cat._id] : acc, []);
+  return catalog.filter(el => categoriesIsTrueArray.indexOf(el.category) !== -1);
+};
+
+export const getCatalogListAfterFilterPrice = (catalog) => (state) => {
+  const priceInterval = state.filter.entities.price.interval;
+  return catalog.filter(el => el.price >= priceInterval[0] && el.price <= priceInterval[1]);
+};
 
 export default catalogReducer;

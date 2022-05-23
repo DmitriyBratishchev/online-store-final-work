@@ -5,12 +5,9 @@ const Catalog = require('../models/catalog')
 const router = express.Router({ mergeParams: true })
 
 const path = require('path')
-const chalk = require('chalk')
 
 router.get('/', async (req, res) => {
-  console.log('catalog get');
   const  catalogIds  = req.body
-  console.log('reqId', catalogIds);
   if (!catalogIds) {
     res.status(400).json({
       error: {

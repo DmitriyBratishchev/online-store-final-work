@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { getAvatar } from '../../store/user';
 
 const Avatar = ({ imageLink, width = '65' }) => {
-  const image = useSelector(getAvatar()) || `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1).toString(36).slice(-5)}.svg`;
+  const image = useSelector(getAvatar()) || '/image/person-circle.svg';
   return (
-    <img
+    < img
       src={ image }
       className='rounded-circle shadow-1-strong me-3'
       alt='avatar'

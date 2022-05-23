@@ -17,7 +17,6 @@ export function setTokens({
 };
 
 export function removeAuthData() {
-  console.log('remove tokens');
   localStorage.removeItem(USERID_KEY);
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(REFRESH_KEY);
@@ -25,7 +24,6 @@ export function removeAuthData() {
 }
 
 export function getAccessToken() {
-  console.log('взял токен');
   return localStorage.getItem(TOKEN_KEY);
 }
 export function getRefreshToken() {
