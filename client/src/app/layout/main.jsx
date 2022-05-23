@@ -32,7 +32,7 @@ const Main = () => {
         </p> */}
         <div className="d-flex">
           <div className="col-3 text-center">
-            <img src="/image/avatar.jpg" width={ '200' } alt="Фото" />
+            <img src="/image/myfoto.jpg" width={ '200' } alt="Фото" />
           </div>
           <div className='ms-4'>
             <h1>Frontend developer</h1>

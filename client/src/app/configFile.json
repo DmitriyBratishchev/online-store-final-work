@@ -1,4 +1,4 @@
 {
-  "apiNodeServer": "http://localhost:8080/api",
-  "apiImages": "http://localhost:8080/api/image/"
+  "apiNodeServer": "http://80.249.145.56/api",
+  "apiImages": "http://80.249.145.56/api/image/"
 }
