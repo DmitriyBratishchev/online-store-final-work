@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import imageService from '../../../services/image.service';
-import config from '../../../configFile.json';
 import fileStyle from './fileField.module.css';
+
+const imageApi = process.env.REACT_APP_API_IMAGES;
+console.log('ggggg', imageApi);
 
 const FileField = ({ label, name, value, onChange, onChangeFile }) => {
   const fileInput = useRef();
@@ -109,7 +111,8 @@ const FileField = ({ label, name, value, onChange, onChangeFile }) => {
                 onDrop={ e => handleDrop(e, index) }
                 className={ fileStyle.fotoCard }
               >
-                <div className={ fileStyle.foto } style={ { backgroundImage: `url(${config.apiImages + image})` } }></div>
+                <div className={ fileStyle.foto } style={ { backgroundImage: `url(${imageApi + image})` } }>
+                </div>
                 <div role={ 'button' } type='button' className={ fileStyle.delete } onClick={ (e) => handleDelete(e, image) }><i className="bi bi-x-circle-fill text-danger"></i></div>
                 <div className={ fileStyle.indexNumber } >{ index + 1 }</div>
               </div>

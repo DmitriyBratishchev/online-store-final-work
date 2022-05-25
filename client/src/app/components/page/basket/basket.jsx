@@ -25,13 +25,14 @@ const Basket = () => {
           basketList.length === 0
             ? <h2>Ваша корзина пока пуста.</h2>
             : <>
-              <div className="col-8">
+              <div className="col-9">
                 { basketList.map(product => <CardHorizontal key={ product._id } element={ product } />) }
               </div>
               <BasketSummary
                 countProductName={ countProductName }
                 countProduct={ countBasket }
                 totalCost={ totalCost }
+                isAuth={ user.auth }
               />
             </>
         }

@@ -4,7 +4,7 @@ import RadioGroupField from '../../common/form/radioGroupField';
 
 const SortAndFilterLocal = ({ handleSort, sortingName, order }) => {
   return (
-    <div className="d-flex justify-content-between px-2 pt-4 pb-3 mb-3" style={ { maxHeight: '40vh', position: 'sticky', top: '62px', zIndex: 100, backgroundColor: 'white' } }>
+    <div className="d-flex justify-content-between bg-light px-2 pt-4 pb-3 mb-3" style={ { maxHeight: '40vh', position: 'sticky', top: '62px', zIndex: 100 } }>
       <RadioGroupField
         options={
           [

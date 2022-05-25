@@ -1,9 +1,8 @@
 import axios from 'axios';
-import configFile from '../configFile.json';
 import localStorageService from './localStorage.service';
 
 const httpAuth = axios.create({
-  baseURL: configFile.apiNodeServer + '/auth/'
+  baseURL: process.env.REACT_APP_API_NODE_SERVER + '/auth/'
 });
 
 const authService = {

@@ -1,10 +1,9 @@
 import axios from 'axios';
-import config from '../configFile.json';
 import authService from './auth.service';
 import localStorageService from './localStorage.service';
 
 const http = axios.create({
-  baseURL: config.apiNodeServer
+  baseURL: process.env.REACT_APP_API_NODE_SERVER
 });
 
 http.interceptors.request.use(async (req) => {
@@ -24,12 +23,14 @@ http.interceptors.request.use(async (req) => {
     };
   }
 
+  console.log(req);
   return req;
 }, (error) => {
   return error;
 });
 
 http.interceptors.response.use((res) => {
+  console.log(res);
   return res;
 }, (error) => {
   return error;

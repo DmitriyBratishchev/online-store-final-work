@@ -1,6 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const config = require('config')
+// const config = require('config')
 const chalk = require('chalk')
 const cors = require('cors')
 const path = require('path')
@@ -9,7 +10,7 @@ const fileUpload = require('express-fileupload')
 const routes = require('./routes')
 
 const app = express()
-const PORT = config.get('port') ?? 8080
+const PORT = process.env.NODE_ENV_PORT ?? 8080
 
 // middleware
 app.use(express.json())
@@ -34,7 +35,7 @@ async function start() {
     // mongoose.connection.once('open', () => {
     //   initDataBase()
     // })
-    await mongoose.connect(config.get('mongooUri'))
+    await mongoose.connect(process.env.NODE_ENV_MONGOO_URI)
     console.log(chalk.green(`MongoDB подключена.`))
     app.listen(PORT, () =>
       console.log(chalk.green(`Server has been started on port ${PORT} ...`))

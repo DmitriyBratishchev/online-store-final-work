@@ -19,7 +19,9 @@ const Login = () => {
           <div className='col-md-6 offset-md-3 shadow p-4'>
             { formType === 'register' ? (
               <>
-                <h3 className='mb-4'>Регистрация</h3>
+                <h3 className='mb-2'>Регистрация</h3>
+                <div className='text-black-50'>(почта: *@*.**)</div>
+                <div className='text-black-50 mb-2'>(пароль: min 1 заглавная буква, min 1 цифра, min 8 символов)</div>
                 <RegisterForm />
                 <p>
                   У вас уже есть аккаунт?
@@ -32,7 +34,9 @@ const Login = () => {
               </>
             ) : (
               <>
-                <h3 className='mb-4'>Login</h3>
+                <h3 className='mb-2'>Login</h3>
+                <div className='text-black-50'>(почта: *@*.**)</div>
+                <div className='text-black-50 mb-2'>(пароль: min 1 заглавная буква, min 1 цифра, min 8 символов)</div>
                 <LoginForm />
                 <p>
                   У вас нет аккаунта?

@@ -31,9 +31,11 @@ router.get('/:image', async (req, res, next) => {
 
 router.post('/', async (req, res) => {
   try {
-    const imagePath = path.resolve('images/' + req.files.image.name)
+    const fileNameArr = req.files.image.name.replace(/[\s\(\)]+/g, '').split('.')
+    const fileName = fileNameArr[0] + '_' + Date.now() + '.' + fileNameArr[1]
+    const imagePath = path.resolve('images/' + fileName)
     req.files.image.mv(imagePath)
-    res.status(201).send(req.files.image.name)
+    res.status(201).send(fileName)
   } catch (error) {
     res.status(500).json({
       message: 'На сервере произошла ошибка. Попробуйте позже. image'
