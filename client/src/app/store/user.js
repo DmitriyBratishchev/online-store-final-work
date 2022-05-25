@@ -18,7 +18,7 @@ const plainState = {
 };
 
 const initialState = localStorageService.getUserId()
-  ? { ...plainState, auth: { userId: localStorageService.getUserId() } }
+  ? { ...plainState, auth: { userId: localStorageService.getUserId() }, isLoggedIn: true }
   : plainState;
 
 const userSlice = createSlice({
