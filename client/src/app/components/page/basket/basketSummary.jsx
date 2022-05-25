@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 
 const BasketSummary = ({ countProductName, countProduct, totalCost }) => {
   const isAuth = useSelector(getIsLoggedIn());
-  console.log('auth', isAuth);
   return (
     <div
       className="d-flex flex-column mx-2 position-sticky border border-3 rounded-3 border-primary"

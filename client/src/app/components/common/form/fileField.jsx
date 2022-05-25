@@ -5,7 +5,6 @@ import imageService from '../../../services/image.service';
 import fileStyle from './fileField.module.css';
 
 const imageApi = process.env.REACT_APP_API_IMAGES;
-console.log('ggggg', imageApi);
 
 const FileField = ({ label, name, value, onChange, onChangeFile }) => {
   const fileInput = useRef();

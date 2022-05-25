@@ -23,14 +23,12 @@ http.interceptors.request.use(async (req) => {
     };
   }
 
-  console.log(req);
   return req;
 }, (error) => {
   return error;
 });
 
 http.interceptors.response.use((res) => {
-  console.log(res);
   return res;
 }, (error) => {
   return error;
