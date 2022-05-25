@@ -32,6 +32,9 @@ const NavBar = () => {
             <input className='form-control me-2' type='search' placeholder='Поиск' aria-label='Search' />
             <button className='btn btn-outline-success text-white' type='submit'>Найти</button>
           </form> */}
+          <div className="fs-3 mx-auto text-white">
+            <span className='text-danger me-2'>!!!</span>Не вносите личную информацию: почту, пароли, фото<span className='text-danger ms-2'>!!!</span>
+          </div>
           <div className="nav-item">
             <Link className='nav-link' style={ { position: 'relative' } } to='/favorites'>
               Избранное

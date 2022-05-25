@@ -18,7 +18,7 @@ const contacts = [
     text: '+7 (930) 011-26-70'
   },
   {
-    href: 'https://github.com/DmitriyBratishchev?tab=repositories',
+    href: 'https://github.com/DmitriyBratishchev/online-store-final-work',
     icon: 'github',
     text: 'https://github.com/DmitriyBratishchev'
   }
