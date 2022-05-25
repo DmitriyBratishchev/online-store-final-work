@@ -37,9 +37,6 @@ const Catalog = () => {
             className='col-2 m-2 me-4'
             style={ { maxHeight: '40vh', position: 'sticky', top: '5rem' } }
           >
-            <h3 className='p-2'>
-              Фильтры
-            </h3>
             <FilterPanel />
           </div>
           <div className='w-100'>

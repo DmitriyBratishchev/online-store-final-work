@@ -116,7 +116,7 @@ export const login = ({ payload, redirect }) => async (dispatch, getState) => {
     } else {
       dispatch(userReceved(user));
     }
-    history.push('/catalog');
+    history.goBack();
   } catch (error) {
     const { code, message, errors } = error.response.data.error;
     if (code === 400) {
@@ -168,6 +168,7 @@ export const signUp = ({ email, password, ...rest }) => async (dispatch, getStat
       image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1).toString(36).slice(-5)}.svg`,
       ...rest
     }));
+    history.goBack();
   } catch (error) {
     const { code, message, errors } = error.response.data.error;
     if (code === 400) {
@@ -265,9 +266,9 @@ export const getCountByIdProduct = (id) => (state) => state.user.entities.basket
 export const getBasketLength = () => (state) => state.user.entities.basket.reduce((acc, el) => acc + el.count, 0);
 export const getIsFavoritById = (id) => (state) => state.user.entities.favorites.indexOf(id) !== -1;
 export const getFavoritesLength = () => (state) => state.user.entities.favorites.length;
+export const getIsLoggedIn = () => (state) => state.user.isLoggedIn;
 
 export const getUsersLoadingStatus = () => (state) => state.user.isloading;
-export const getIsLoggedIn = () => (state) => state.user.isLoggedIn;
 export const getDataStatus = () => (state) => state.user.dataLoaded;
 
 export default userReducer;

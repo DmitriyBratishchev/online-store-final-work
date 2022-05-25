@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import config from '../../../configFile.json';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import style from './cardHorizontal.module.css';
@@ -9,6 +8,8 @@ import { editBasket, editFavorit, getCountByIdProduct, getIsFavoritById } from '
 import Category from '../category';
 import CardTitle from './cardTitle';
 import SliceText from './sliceText';
+
+const imageApi = process.env.REACT_APP_API_IMAGES;
 
 const CardHorizontal = ({ element }) => {
   const dispatch = useDispatch();
@@ -31,12 +32,12 @@ const CardHorizontal = ({ element }) => {
 
   return (
     <>
-      <div className={ `d-flex justify-content-center border border-secondary border-3 p-4 mb-2 w-100 ` }>
+      <div className={ `d-flex justify-content-center bg-white border border-black-10 border-3 p-4 mb-2 w-100 ` }>
         <div className={ classNames(style.image_card) }>
           { !element?.images || element.images.length === 0
             ? <img src='image/no-img.png' alt="foto" width="200px" height="200px" />
             : element.images.length === 1
-              ? <img className={ style.foto } src={ config.apiImages + element.images[0] } alt="foto" />
+              ? <img className={ style.foto } src={ imageApi + element.images[0] } alt="foto" />
               : (
                 <SwiperCart
                   images={ element.images }
@@ -61,15 +62,15 @@ const CardHorizontal = ({ element }) => {
           <CardTitle className='text-primary mb-auto'>{ element.price || 0 } руб.</CardTitle>
           { countBasket > 0 ?
             <div className="d-flex justify-content-between align-items-center mb-2">
-              <div className="btn-group" role="group" aria-label="Basic outlined example">
+              <div className="btn-group flex-grow-1" role="group" aria-label="Basic outlined example">
                 <button
                   type="button"
-                  className="btn btn-outline-primary p-2 px-2 lh-1"
+                  className="btn btn-outline-primary p-2 px-2 lh-1 w-10"
                   onClick={ () => decrementBasket(element._id) }
                 >
                   -
                 </button>
-                <CardTitle className='mx-3'> { countBasket } шт</CardTitle>
+                <CardTitle className='mx-1 text-center w-100 flex-grow-1'> { countBasket } шт</CardTitle>
                 <button
                   type="button"
                   className="btn btn-outline-primary p-2 px-2 lh-1"
@@ -78,7 +79,7 @@ const CardHorizontal = ({ element }) => {
                   +
                 </button>
               </div>
-              <button className='btn btn-success p-2' onClick={ () => removeBasket(element._id) }>Удалить из корзины</button>
+              <button className='btn btn-success p-2 ms-2 flex-shrink-1' onClick={ () => removeBasket(element._id) }>Удалить из корзины</button>
             </div>
             :
             <button className='btn btn-success p-2 mb-2 w-100' onClick={ () => incrementBasket(element._id) }>В корзину</button>

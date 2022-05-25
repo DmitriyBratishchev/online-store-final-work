@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken')
-const config = require('config')
+// const config = require('config')
 const Token = require('../models/token')
 
 class TokenService {
   generate(payload) {
-    const accessToken = jwt.sign(payload, config.get('accessSecret'), {
+    const accessToken = jwt.sign(payload, process.env.NODE_ENV_ACCESS_SECRET, {
       expiresIn: 3600
     })
 
-    const refreshToken = jwt.sign(payload, config.get('refreshSecret'))
+    const refreshToken = jwt.sign(payload, process.env.NODE_ENV_REFRESH_SECRET)
     return {accessToken, refreshToken, expiresIn: 3600}
   }
 
@@ -25,7 +25,7 @@ class TokenService {
 
   validateRefresh(refreshToken) {
     try {
-      return jwt.verify(refreshToken, config.get('refreshSecret'))
+      return jwt.verify(refreshToken, process.env.NODE_ENV_REFRESH_SECRET)
     } catch (error) {
       return null
     }
@@ -33,7 +33,7 @@ class TokenService {
 
   validateAccess(accessToken) {
     try {
-      return jwt.verify(accessToken, config.get('accessSecret'))
+      return jwt.verify(accessToken, process.env.NODE_ENV_ACCESS_SECRET)
     } catch (error) {
       return null
     }

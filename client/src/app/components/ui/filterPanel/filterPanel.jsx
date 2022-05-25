@@ -19,7 +19,7 @@ const FilterPanel = () => {
 
   return (
     <>
-      <h3>Категории</h3>
+      <h4 className='mb-3'>Категории</h4>
       { filterCategories.length && filterCategories.map(category => {
         return (
           <CheckBoxField
@@ -32,7 +32,7 @@ const FilterPanel = () => {
           </CheckBoxField>
         );
       }) }
-      <h3>Цена</h3>
+      <h4 className='mb-3'>Цена</h4>
       <RangeField
         min={ filterPrice.min }
         max={ filterPrice.max }

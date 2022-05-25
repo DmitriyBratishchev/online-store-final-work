@@ -5,9 +5,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import PropTypes from 'prop-types';
-import config from '../../../configFile.json';
 import style from './swiper.module.css';
 import { getRandomNumber } from '../../../utils/getRandomNumber';
+
+const imageApi = process.env.REACT_APP_API_IMAGES;
 
 function SwiperCart({ images, propClassName }) {
   const randomDelay = getRandomNumber(1000, 4000);
@@ -27,7 +28,7 @@ function SwiperCart({ images, propClassName }) {
         return (
           <SwiperSlide key={ image } className={ style.foto }>
             <div className='swiper-zoom-container'>
-              <img className={ style.foto + ` ${propClassName}` + ' swiper-slide-zoomed' } src={ config.apiImages + image } alt="foto" />
+              <img className={ style.foto + ` ${propClassName}` + ' swiper-slide-zoomed' } src={ imageApi + image } alt="foto" />
 
             </div>
           </SwiperSlide>
