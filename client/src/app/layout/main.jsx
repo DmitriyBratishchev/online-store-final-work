@@ -92,7 +92,7 @@ const Main = () => {
             </p>
           </div>
           <ul className='ms-5 mb-4'>
-            <li>Взаимодействие frontend и backend с ипользованием библиотеки axios (методы get, post, put, puth, delete). А так же использование <code>axios.interceptors</code> для работы с токенами и логирования запросов frontend и ответов backend).</li>
+            <li>Взаимодействие frontend и backend с ипользованием библиотеки axios (методы get, post, put, patch, delete). А так же использование <code>axios.interceptors</code> для работы с токенами и логирования запросов frontend и ответов backend).</li>
             <li>Авторизация по accesstoken и refreshtoken. Ограничения на данном этапе касаются только запросов получения и изменения данных пользователя.</li>
             <li>Валидация на стороне клиента и сервера (на сервере только формы регистрации и входа)</li>
             <li>Хранение, редактирование и использование данных при помощи Redux (reduxjs/toolkit). <code>useDispatch(), useSelector()</code>.</li>
