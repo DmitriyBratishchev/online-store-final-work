@@ -32,7 +32,7 @@ const Main = () => {
           Тут будет общая информация ..... (м.б резюме, ссылки на проекты и др. личная информация)
         </p> */}
         <div className="d-flex">
-          <div className="col-3 text-center">
+          <div className="col-3 text-center" style={ { minWidth: 200 } }>
             <img src="/image/myfoto.jpg" width={ '200' } alt="Фото" />
           </div>
           <div className='ms-4'>
@@ -42,9 +42,9 @@ const Main = () => {
             <p className="fs-4">
               <a href="https://yandex.ru/maps/-/CCUJIUE7SD" rel="noreferrer" target="_blank">
                 <i className="bi bi-geo-alt-fill me-3"></i>
-                Россия, г. Воронеж
+                Россия, г. Воронеж{ ' ' }
               </a>
-              <span className='ms-3 fs-5'>(не готов к переезду)</span>
+              <span className='ms-1 fs-5 text-nowrap'>(не готов к переезду)</span>
             </p>
           </div>
         </div>
