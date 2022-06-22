@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import RadioGroupField from '../../common/form/radioGroupField';
 
@@ -42,4 +42,4 @@ SortAndFilterLocal.propTypes = {
   order: PropTypes.string
 };
 
-export default SortAndFilterLocal;
+export default memo(SortAndFilterLocal);

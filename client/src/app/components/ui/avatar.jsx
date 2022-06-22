@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getAvatar } from '../../store/user';
@@ -20,4 +20,4 @@ Avatar.propTypes = {
   width: PropTypes.string
 };
 
-export default Avatar;
+export default memo(Avatar);

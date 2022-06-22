@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getBasketLength, getFavoritesLength, getUserName, loadCurrentUser, logOut } from '../../store/user';
@@ -10,6 +10,9 @@ const NavBar = () => {
   const countBasket = useSelector(getBasketLength());
   const countFavorit = useSelector(getFavoritesLength());
   const userName = useSelector(getUserName());
+
+  const MemoLink = memo(Link);
+
   useEffect(() => {
     dispatch(loadCurrentUser());
   }, [countBasket, countFavorit]);
@@ -19,13 +22,14 @@ const NavBar = () => {
         <div className='collapse navbar-collapse navbar-nav' id='navbarSupportedContent'>
           <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
             <li className='nav-item'>
-              <Link className='nav-link' aria-current='page' to='/'>Резюме</Link>
+              <MemoLink className='nav-link' aria-current='page' to='/'>Резюме</MemoLink>
+              {/* <Link className='nav-link' aria-current='page' to='/'>Резюме</Link> */ }
             </li>
             <li className='nav-item'>
-              <Link className='nav-link' to='/catalog' >Каталог</Link>
+              <MemoLink className='nav-link' to='/catalog' >Каталог</MemoLink>
             </li>
             <li className='nav-item'>
-              <Link className='nav-link' to='/admin/catalog' >Админ</Link>
+              <MemoLink className='nav-link' to='/admin/catalog' >Админ</MemoLink>
             </li>
           </ul>
           {/* <form className='d-flex'>
@@ -36,24 +40,24 @@ const NavBar = () => {
             <span className='text-danger me-2'>!!!</span>Не вносите личную информацию: почту, пароли, фото<span className='text-danger ms-2'>!!!</span>
           </div> */}
           <div className="nav-item">
-            <Link className='nav-link' style={ { position: 'relative' } } to='/favorites'>
+            <MemoLink className='nav-link' style={ { position: 'relative' } } to='/favorites'>
               Избранное
               <span className={ style.basketCount }>{ countFavorit }</span>
-            </Link>
+            </MemoLink>
           </div>
           <div className="nav-item">
-            <Link className='nav-link' style={ { position: 'relative' } } to='/basket'>
+            <MemoLink className='nav-link' style={ { position: 'relative' } } to='/basket'>
               Корзина
               <span className={ style.basketCount }>{ countBasket }</span>
-            </Link>
+            </MemoLink>
           </div>
           <div className='navbar-nav nav-item dropdown ms-4 me-3'>
-            <Link className='nav-link dropdown-toggle text-white' to={ '#' } id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
+            <MemoLink className='nav-link dropdown-toggle text-white' to={ '#' } id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
               <span className='pe-2'>{ userName || 'User' }</span>
               <Avatar width='30' />
-            </Link>
+            </MemoLink>
             <ul className='dropdown-menu dropdown-menu-end' aria-labelledby='navbarDropdown'>
-              <li><Link className='dropdown-item' to={ '/login' }>Вход/Регистрация</Link></li>
+              <li><MemoLink className='dropdown-item' to={ '/login' }>Вход/Регистрация</MemoLink></li>
               <li><hr className='dropdown-divider' /></li>
               <li role={ 'button' } className='px-3 py-1' onClick={ () => dispatch(logOut()) }>Выход</li>
             </ul>
