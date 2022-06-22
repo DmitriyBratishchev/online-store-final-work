@@ -1,14 +1,14 @@
 [
   {
-    "id": "1",
-    "name": "tech"
+    "_id": "6299cbf0c941cfca1c70555a",
+    "name": "Мебель"
   },
   {
-    "id": "2",
-    "name": "tel"
+    "_id": "6299cc34adfc8bef8c5df952",
+    "name": "Телефоны"
   },
   {
-    "id": "3",
-    "name": "home"
+    "_id": "6299cc51adfc8bef8c5df955",
+    "name": "Автомобили"
   }
 ]

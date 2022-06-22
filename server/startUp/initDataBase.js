@@ -5,15 +5,16 @@ const catalogMock = require('../mock/catalog.json')
 const categoriesMock = require('../mock/categories.json')
 
 module.exports = async () => {
+  console.log('new base');
   const catalog = await catalogModel.find()
-  if (catalog.length !== catalogMock.length) {
+  // if (catalog.length !== catalogMock.length) {
     await createInitialEntity(catalogModel, catalogMock)
-  }
+  // }
 
   const categories = await categoriesModel.find()
-  if (categories.length !== categoriesMock.length) {
+  // if (categories.length !== categoriesMock.length) {
     await createInitialEntity(categoriesModel, categoriesMock)
-  }
+  // }
 }
 
 async function createInitialEntity(Model, data) {

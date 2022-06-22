@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
@@ -101,4 +101,4 @@ CardHorizontal.propTypes = {
   element: PropTypes.object
 };
 
-export default CardHorizontal;
+export default memo(CardHorizontal);

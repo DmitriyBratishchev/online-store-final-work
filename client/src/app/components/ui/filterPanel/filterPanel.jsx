@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editCategoryFilter, editPriceFilter, getFilterPrice, getFiterCategories } from '../../../store/filter';
 import CheckBoxField from '../../common/form/checkBoxField';
@@ -43,4 +43,4 @@ const FilterPanel = () => {
   );
 };
 
-export default FilterPanel;
+export default memo(FilterPanel);

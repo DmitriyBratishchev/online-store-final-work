@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getCategoryNameById } from '../../store/categories';
@@ -16,4 +16,4 @@ Category.propTypes = {
   _id: PropTypes.string
 };
 
-export default Category;
+export default memo(Category);

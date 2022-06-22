@@ -86,17 +86,17 @@ router.delete('/:catalogId', async (req, res) => {
     }
 
     const { images } = await Catalog.findById(catalogId);
-    if (images.length !== 0) {
-      images.forEach(im => {
-        try {
-          const imagePath = path.resolve('images/' + im)
-          fs.unlink(imagePath)
-        }
-        catch (error) {
-          console.log(chalk.red('Файл ', im, ' удалить не получилось.'));
-        }
-      })
-    }
+    // if (images.length !== 0) {
+    //   images.forEach(im => {
+    //     try {
+    //       const imagePath = path.resolve('images/' + im)
+    //       fs.unlink(imagePath)
+    //     }
+    //     catch (error) {
+    //       console.log(chalk.red('Файл ', im, ' удалить не получилось.'));
+    //     }
+    //   })
+    // }
     const deleteGoods = await Catalog.findByIdAndDelete(catalogId)
     res.status(200).send(deleteGoods)
 
